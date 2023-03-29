@@ -59,8 +59,16 @@ public class Board extends JPanel {
             for (ArrayList<Object> pos: line){
                 int offset = this.offset.get(pos.get(1)) * 50;
                 int hoffset = ((int)(57.74 + 28.88)) * revdict.get(pos.get(1));
-                System.out.println(height + offset + " " + hoffset);
-                Image hex = new ImageIcon("src/Images/bitmap.png").getImage();
+                Image hex = hex = new ImageIcon("src/Images/brown.png").getImage();
+                switch ((height + offset) % 150){
+                    case 0:{
+                        hex = new ImageIcon("src/Images/light.png").getImage();
+                    }; break;
+                    case 50: {
+                        hex = new ImageIcon("src/Images/dark.png").getImage();
+                    }; break;
+                }
+
                 g.drawImage(hex, hoffset,height + offset, 115, 100,this);
                 //g.drawImage(hex, 100, 100,   this);
             }
