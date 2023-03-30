@@ -1,5 +1,7 @@
 package App;
 
+import Entity.Piece.Piece;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -7,6 +9,7 @@ import java.util.HashMap;
 
 public class Board extends JPanel {
     public ArrayList<ArrayList<ArrayList<Object>>> board;
+    public Object[] pieces;
     private HashMap<Integer, String> dict = new HashMap<Integer, String>(){
         {
             put(1, "a"); put(2, "b"); put(3, "c"); put(4, "d"); put(5, "e"); put(6, "f");
@@ -29,6 +32,7 @@ public class Board extends JPanel {
 
         int size = 11;
         board = new ArrayList();
+        pieces = new Piece[121];;
         for (int i = size; i > 0; i--){
             int start = 1;
             int len = size;
@@ -45,7 +49,23 @@ public class Board extends JPanel {
             }
             board.add(line);
         }
+        for (int i = 0; i < 11; i++){
+            for (int j = 0; j < 11; j++){
+                pieces[i * 11 + j] = new Piece(i, (String)dict.get(j), 0, "none");
+            }
 
+        }
+        for (int i = ((size - 1) / 2); i > 0; i--){
+            int offset = 11 * (((size - 1) / 2) - i);
+            for (int j = 0; j < i; j++){
+//                pieces[offset + j] = new Piece(i + ((size - 1) / 2), (String)dict.get(j), -1, "none");
+//                pieces[offset + (size - 1 - j)] = new Piece(i + ((size - 1) / 2), (String)dict.get(size - 1 - j), -1, "none");
+                pieces[offset + j] = null;
+                pieces[offset + (size - 1 - j)] = null;
+
+            }
+
+        }
 
     }
 
