@@ -1,6 +1,6 @@
 package App;
 
-import Entity.Piece.Piece;
+import Entity.Piece.Empty;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,7 +32,7 @@ public class Board extends JPanel {
 
         int size = 11;
         board = new ArrayList();
-        pieces = new Piece[121];;
+        pieces = new Empty[121];;
         for (int i = size; i > 0; i--){
             int start = 1;
             int len = size;
@@ -51,7 +51,7 @@ public class Board extends JPanel {
         }
         for (int i = 0; i < 11; i++){
             for (int j = 0; j < 11; j++){
-                pieces[i * 11 + j] = new Piece(i, (String)dict.get(j), 0, "none");
+                pieces[i * 11 + j] = new Empty(i, dict.get(j));
             }
 
         }

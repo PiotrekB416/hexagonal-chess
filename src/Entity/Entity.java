@@ -10,14 +10,8 @@ abstract public class Entity {
         list.add(this.file);
         return list;
     }
-    protected Entity(int rank, String file, String id){
+    protected Entity(int rank, String file){
         this.rank = rank;
         this.file = file;
-        this.id = id;
-    }
-
-    private String id;
-    public String getid(){
-        return this.id;
     }
 }
