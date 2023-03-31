@@ -1,6 +1,6 @@
 package App;
 
-import Entity.Piece.Empty;
+import Entity.Piece.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 public class Board extends JPanel {
     public ArrayList<ArrayList<ArrayList<Object>>> board;
-    public Object[] pieces;
+    public Piece[] pieces;
     private HashMap<Integer, String> dict = new HashMap<Integer, String>(){
         {
             put(1, "a"); put(2, "b"); put(3, "c"); put(4, "d"); put(5, "e"); put(6, "f");
@@ -28,8 +28,9 @@ public class Board extends JPanel {
             put("l", 0); put("k", 1); put("i", 2); put("h", 3); put("g", 4);
         }
     };
-    public Board(){
-
+    private double scale;
+    public Board(double scale){
+        this.scale = scale;
         int size = 11;
         board = new ArrayList();
         pieces = new Empty[121];;
@@ -79,7 +80,7 @@ public class Board extends JPanel {
             for (ArrayList<Object> pos: line){
                 int offset = this.offset.get(pos.get(1)) * 50;
                 int hoffset = ((int)(57.74 + 28.88)) * revdict.get(pos.get(1));
-                Image hex = hex = new ImageIcon("src/Images/brown.png").getImage();
+                Image hex = new ImageIcon("src/Images/brown.png").getImage();
                 switch ((height + offset) % 150){
                     case 0:{
                         hex = new ImageIcon("src/Images/light.png").getImage();
@@ -89,7 +90,7 @@ public class Board extends JPanel {
                     }; break;
                 }
 
-                g.drawImage(hex, hoffset,height + offset, 115, 100,this);
+                g.drawImage(hex, (int)(hoffset * this.scale),(int)((height + offset) * this.scale), (int)(115 * this.scale), (int)(100 * this.scale),this);
                 //g.drawImage(hex, 100, 100,   this);
             }
             height += 100;
