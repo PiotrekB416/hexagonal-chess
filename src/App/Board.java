@@ -81,13 +81,28 @@ public class Board extends JPanel {
                 int offset = this.offset.get(pos.get(1)) * 50;
                 int hoffset = ((int)(57.74 + 28.88)) * revdict.get(pos.get(1));
                 Image hex = new ImageIcon("src/Images/brown.png").getImage();
-                switch ((height + offset) % 150){
-                    case 0:{
-                        hex = new ImageIcon("src/Images/light.png").getImage();
-                    }; break;
-                    case 50: {
-                        hex = new ImageIcon("src/Images/dark.png").getImage();
-                    }; break;
+//                switch ((height + offset) % 150){
+//                    case 0:{
+//                        hex = new ImageIcon("src/Images/light.png").getImage();
+//                    }; break;
+//                    case 50: {
+//                        hex = new ImageIcon("src/Images/dark.png").getImage();
+//                    }; break;
+//                }
+                int color = (((int)pos.get(0) % 3) + (this.offset.get(pos.get(1)) % 3)) % 3;
+                switch (color) {
+                    case 1 -> {
+                        {
+                            hex = new ImageIcon("src/Images/dark.png").getImage();
+                        }
+                        ;
+                    }
+                    case 0 -> {
+                        {
+                            hex = new ImageIcon("src/Images/light.png").getImage();
+                        }
+                        ;
+                    }
                 }
 
                 g.drawImage(hex, (int)(hoffset * this.scale),(int)((height + offset) * this.scale), (int)(115 * this.scale), (int)(100 * this.scale),this);
