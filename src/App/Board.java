@@ -73,7 +73,7 @@ public class Board extends JPanel {
     @Override
     protected void paintComponent(Graphics g){
         setBackground(Color.BLACK);
-        int height = -200;
+        int height = -230;
         super.paintComponent(g);
         for (ArrayList<ArrayList<Object>> line: board){
 

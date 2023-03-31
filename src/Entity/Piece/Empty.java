@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class Empty extends Piece {
 
     public Empty(int rank, String file){
-        super(rank, file);
+        super(rank, file, false);
     }
 
     @Override
