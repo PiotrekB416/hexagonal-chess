@@ -2,13 +2,11 @@ package Entity.Piece;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
-public class Rook extends Piece {
+public class Bishop extends Piece {
     private boolean white;
-    public Rook(int rank, String file, boolean white) {
+    public Bishop(int rank, String file, boolean white) {
         super(rank, file);
         this.white = white;
     }
@@ -23,7 +21,7 @@ public class Rook extends Piece {
         ArrayList<Integer> ret = new ArrayList();
         //int file = this.revdict.get(this.file);
         int[][] moveArray = new int[][]{
-                {1, 0}, {-1, 0}, {0, 1}, {0, -1}, {-1, -1}, {-1, 1}
+                {1, 1}, {1, -1}, {-1, -2}, {-1, 2}, {-2, -1}, {-2, 1}
         };
 
         return generateMovesFromArray(moveArray, this.rank, this.file, true);

@@ -13,7 +13,7 @@ public class Knight extends Piece{
         int[][] moveArray = {{-1, -3}, {-2,-3}, {-1 , 3}, {-2, 3},
                 {-3, -2}, {-3, -1}, {-3, 1}, {-3, 2},
                 {1, -2}, {1, 2}, {2, -1}, {2, 1}};
-        return generateMovesFromArray(moveArray, this.rank, this.file);
+        return generateMovesFromArray(moveArray, this.rank, this.file, false);
     }
 
 }

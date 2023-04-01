@@ -107,14 +107,15 @@ public class Board extends JPanel {
         this.position = position;
         Board.scale = 1;
         this.setPosition(position);
-
+        System.out.println(board);
         addMouseListener(new MouseAdapter() {
 
             @Override
             public void mouseClicked(MouseEvent e) {
                 int startheight = -300;
-
-                for (Tile tile : board) {
+                int clicked_index = -1;
+                for (int i = 0; i < 121; i++) {
+                    Tile tile = board.get(i);
                     if(tile == null){
                         continue;
                     }
@@ -126,9 +127,27 @@ public class Board extends JPanel {
                     if (e.getX() > startx && e.getX() < startx + length &&
                         e.getY() > starty && e.getY() < starty + length
                     ){
-                        System.out.println(tile.getPiece());
+                        clicked_index = i;
+                        break;
+
                     }
                 }
+                if(clicked_index < 0){
+                    return;
+                }
+                for (int i = 0; i < 121; i++) {
+                    Tile tile = board.get(i);
+                    if(tile == null){
+                        continue;
+                    }
+                    tile.setMoveIndicator(false);
+                }
+                for(int index: board.get(clicked_index).getPiece().getPossibleMoves()){
+                    Tile tile = board.get(index);
+
+                    if(tile != null){ tile.setMoveIndicator(true);}
+                }
+                repaint();
 
             }
 
@@ -153,9 +172,10 @@ public class Board extends JPanel {
 
             g.drawImage(tile.getTexture(), (int) (hoffset * Board.scale), (int) ((startheight + (100 * (12 - tile.getRank())) + offset) * Board.scale), (int) (115 * Board.scale), (int) (100 * Board.scale), this);
             if (tile.getPiece() != null) {
-
                 g.drawImage(tile.getPiece().getTexture(), (int) ((hoffset + 17.5) * this.scale), (int) ((startheight + (100 * (12 - tile.getRank())) + offset + 10) * Board.scale), (int) (80 * Board.scale), (int) (80 * Board.scale), this);
             }
+            g.drawImage(tile.getMoveIndicatorTexture(), (int) ((hoffset + 42.5) * Board.scale), (int) ((startheight + (100 * (12 - tile.getRank())) + offset + 35) * Board.scale), (int) (30 * Board.scale), (int) (30 * Board.scale), this);
+
 
             //g.drawImage(hex, 100, 100,   this);
         }

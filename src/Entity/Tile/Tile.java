@@ -34,6 +34,7 @@ public class Tile extends Entity {
     public Tile(int rank, String file, Piece piece) {
         super(rank, file);
         this.piece = piece;
+        this.moveIndicator = false;
     }
     public Image getTexture() {
 
@@ -62,5 +63,22 @@ public class Tile extends Entity {
             default:
                 throw new IllegalStateException("Unexpected value: " + color);
         }
+    }
+
+    public boolean isMoveIndicator() {
+        return moveIndicator;
+    }
+
+    public void setMoveIndicator(boolean moveIndicator) {
+        this.moveIndicator = moveIndicator;
+    }
+
+    private boolean moveIndicator;
+
+    public Image getMoveIndicatorTexture(){
+        if (this.moveIndicator){
+            return new ImageIcon("src/Images/dot.png").getImage();
+        }
+        return new ImageIcon("src/Images/Empty.png").getImage();
     }
 }

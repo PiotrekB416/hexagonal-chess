@@ -33,7 +33,7 @@ public class Pawn extends Piece {
     private ArrayList<Integer> getWhiteMoves(){
         ArrayList<Integer> ret = new ArrayList();
         int[] orgpos = new int[]{
-                0, 0, 1, 2, 3, 4, 5, 5, 4, 3, 2
+                0, 0, 1, 2, 3, 4, 5, 4, 3, 2, 1
         };
         int file = super.revdict.get(this.file);
 
@@ -46,7 +46,7 @@ public class Pawn extends Piece {
                     {2, 0}, {1, 0}, {0, -1}, {0, 1}
             };
         }
-        return generateMovesFromArray(moveArray, this.rank, this.file);
+        return generateMovesFromArray(moveArray, this.rank, this.file, false);
     }
     private ArrayList<Integer> getBlackMoves(){
         ArrayList<Integer> ret = new ArrayList();
@@ -62,7 +62,7 @@ public class Pawn extends Piece {
                     {-2, 0}, {-1, 0}, {-1, -1}, {-1, 1}
             };
         }
-        return generateMovesFromArray(moveArray, this.rank, this.file);
+        return generateMovesFromArray(moveArray, this.rank, this.file, false);
 
 
     }
