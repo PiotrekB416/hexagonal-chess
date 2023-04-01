@@ -5,6 +5,8 @@ import Entity.Piece.Piece;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -27,6 +29,7 @@ public class Tile extends Entity {
     private Piece piece;
     public Tile(int rank, String file){
         super(rank, file);
+        this.piece = null;
     }
     public Tile(int rank, String file, Piece piece) {
         super(rank, file);

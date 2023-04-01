@@ -2,13 +2,16 @@ package Entity.Piece;
 
 import Entity.Entity;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public abstract class Piece extends Entity {
-    protected boolean white;
-    public Piece(int rank, String file, boolean white){
+    public Piece(int rank, String file){
         super(rank, file);
+
     }
 
     protected HashMap<String, Integer> revdict = new HashMap(){
@@ -21,4 +24,9 @@ public abstract class Piece extends Entity {
     public ArrayList<Integer> getPossibleMoves(){
         return new ArrayList();
     }
+
+    public Image getTexture(){
+        return new ImageIcon().getImage();
+    }
+
 }

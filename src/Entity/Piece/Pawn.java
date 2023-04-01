@@ -2,12 +2,23 @@ package Entity.Piece;
 
 import Entity.Entity;
 
+import javax.imageio.ImageIO;
+import javax.imageio.ImageTranscoder;
+import javax.imageio.ImageTypeSpecifier;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Pawn extends Piece {
+    private boolean white;
     public Pawn(int rank, String file, boolean white){
-        super(rank, file, white);
+        super(rank, file);
+        this.white = white;
     }
 
 
@@ -50,7 +61,7 @@ public class Pawn extends Piece {
 
 
         if (this.rank == 7){
-            ret.add((this.rank - 2) * 11 + file + 0);
+            ret.add((this.rank - 2) * 11 + file);
         }
         for(int[] move : moves){
 
@@ -59,5 +70,16 @@ public class Pawn extends Piece {
 
         return ret;
     }
+    @Override
+    public Image getTexture() {
+        String color = "black";
+        if (this.white){
+            color = "white";
+        }
+        String file = "src/Images/" + color + "/pawn.png";
 
+        Image image = new ImageIcon(file).getImage();
+
+        return image;
+    }
 }

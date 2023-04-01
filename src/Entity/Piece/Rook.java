@@ -1,10 +1,16 @@
 package Entity.Piece;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 public class Rook extends Piece {
+    private boolean white;
     public Rook(int rank, String file, boolean white) {
-        super(rank, file, white);
+        super(rank, file);
+        this.white = white;
     }
 
     @Override
@@ -44,5 +50,20 @@ public class Rook extends Piece {
         }
 
         return ret;
+
+
+    }
+
+    @Override
+    public Image getTexture() {
+        String color = "black";
+        if (this.white){
+            color = "white";
+        }
+        String file = "src/Images/" + color + "/rook.png";
+
+        Image image = new ImageIcon(file).getImage();
+
+        return image;
     }
 }
