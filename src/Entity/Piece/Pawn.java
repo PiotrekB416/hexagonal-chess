@@ -37,38 +37,34 @@ public class Pawn extends Piece {
         };
         int file = super.revdict.get(this.file);
 
-        int[][] moves = new int[][]{
+        int[][] moveArray = new int[][]{
                 {1, 0}, {0, -1}, {0, 1}
         };
         if (orgpos[file] == this.rank){
-            ret.add((this.rank + 2) * 11 + file + 0);
+            //ret.add((this.rank + 2) * 11 + file + 0);
+            moveArray = new int[][]{
+                    {2, 0}, {1, 0}, {0, -1}, {0, 1}
+            };
         }
-        for(int[] move : moves){
-
-            ret.add((this.rank + move[0]) * 11 + file + move[1]);
-        }
-
-        return ret;
+        return generateMovesFromArray(moveArray, this.rank, this.file);
     }
     private ArrayList<Integer> getBlackMoves(){
         ArrayList<Integer> ret = new ArrayList();
 
         int file = this.revdict.get(this.file);
 
-        int[][] moves = new int[][]{
-                {1, 0}, {1, -1}, {1, 1}
+        int[][] moveArray = new int[][]{
+                {-1, 0}, {-1, -1}, {-1, 1}
         };
-
-
         if (this.rank == 7){
-            ret.add((this.rank - 2) * 11 + file);
+            //ret.add((this.rank + 2) * 11 + file + 0);
+            moveArray = new int[][]{
+                    {-2, 0}, {-1, 0}, {-1, -1}, {-1, 1}
+            };
         }
-        for(int[] move : moves){
+        return generateMovesFromArray(moveArray, this.rank, this.file);
 
-            ret.add((this.rank - move[0]) * 11 + file + move[1]);
-        }
 
-        return ret;
     }
     @Override
     public Image getTexture() {
