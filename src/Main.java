@@ -9,7 +9,12 @@ public class Main {
 //        Board board = new Board(startposition);
 //        for (int i = 0; i < 11; i++){
 //            for (int j = 0; j < 11; j++){
-//                System.out.print(board.pieces[i * 11 + j] + "\t");
+//                try{
+//                    System.out.print(board.board.get(i*11+j).getPiece() + "\t");
+//                } catch (Exception e){
+//                    System.out.print(null + "\t");
+//                }
+//
 //            }
 //            System.out.print("\n");
 //        }
