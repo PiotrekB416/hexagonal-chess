@@ -21,7 +21,7 @@ public class Bishop extends Piece {
         ArrayList<Integer> ret = new ArrayList();
         //int file = this.revdict.get(this.file);
         int[][] moveArray = new int[][]{
-                {1, 1}, {1, -1}, {-1, -2}, {-1, 2}, {-2, -1}, {-2, 1}
+                {1, -1}, {3, -1}, {5, -1}, {7, -1}, {9, -1}, {11, -1}
         };
 
         return generateMovesFromArray(moveArray, this.rank, this.file, true);
@@ -33,7 +33,7 @@ public class Bishop extends Piece {
         if (this.white){
             color = "white";
         }
-        String file = "src/Images/" + color + "/rook.png";
+        String file = "src/Images/" + color + "/bishop.png";
 
         Image image = new ImageIcon(file).getImage();
 

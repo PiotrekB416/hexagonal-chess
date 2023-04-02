@@ -61,16 +61,21 @@ public class Board extends JPanel {
                     board.add(tile);
                     continue;
                 }
-
+                boolean color = (this.position.charAt(index) == Character.toUpperCase(this.position.charAt(index)));
                 switch (this.position.charAt(index)) {
                     case 'p', 'P' -> {
-                        boolean color = (this.position.charAt(index) == Character.toUpperCase(this.position.charAt(index)));
                         tile.setPiece(new Pawn(i, dict.get(j), color));
                     }
+                    case 'n', 'N' -> {
+                        tile.setPiece(new Knight(i, dict.get(j), color));
+                    }
+                    case 'b', 'B' -> {
+                        tile.setPiece(new Bishop(i, dict.get(j), color));
+                    }
                     case 'r', 'R' -> {
-                        boolean color = (this.position.charAt(index) == Character.toUpperCase(this.position.charAt(index)));
                         tile.setPiece(new Rook(i, dict.get(j), color));
                     }
+
                     case '/' -> {
                         index++;
                         j--;

@@ -23,7 +23,7 @@ public class Rook extends Piece {
         ArrayList<Integer> ret = new ArrayList();
         //int file = this.revdict.get(this.file);
         int[][] moveArray = new int[][]{
-                {1, 0}, {-1, 0}, {0, 1}, {0, -1}, {-1, -1}, {-1, 1}
+                {0, -1}, {2, -1}, {4, -1}, {6, -1}, {8, -1}, {10, -1}
         };
 
         return generateMovesFromArray(moveArray, this.rank, this.file, true);
