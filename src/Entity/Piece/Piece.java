@@ -14,18 +14,6 @@ public abstract class Piece extends Entity {
         super(rank, file);
 
     }
-    protected static final HashMap<Integer, String> dict = new HashMap<Integer, String>(){
-        {
-            put(1, "a"); put(2, "b"); put(3, "c"); put(4, "d"); put(5, "e"); put(6, "f");
-            put(7, "g"); put(8, "h"); put(9, "i"); put(10, "k"); put(11, "l");
-        }
-    };
-    protected static final HashMap<String, Integer> revdict = new HashMap<String, Integer>(){
-        {
-            put("a", 1); put("b", 2); put("c", 3); put("d", 4); put("e", 5); put("f", 6);
-            put("g", 7); put("h", 8); put("i", 9); put("k", 10); put("l", 11);
-        }
-    };
     protected ArrayList<Integer> generateMovesFromArray(int[][] moveArray, int rank, String file, boolean rep){
         ArrayList<Integer> moves = new ArrayList<>();
 
@@ -103,6 +91,11 @@ public abstract class Piece extends Entity {
                             }
                             continue;
                         }
+                        else {
+                            if (Board.board.get(pos).getPiece().getClass() != Empty.class){
+                                continue;
+                            }
+                        }
                     }
                     if (Board.board.get(pos).getPiece().getClass() == Empty.class){
                         moves.add(pos);
@@ -120,6 +113,7 @@ public abstract class Piece extends Entity {
 
         return moves;
     }
+
     public ArrayList<Integer> getPossibleMoves(){
         return new ArrayList();
     }

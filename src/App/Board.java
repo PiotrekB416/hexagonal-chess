@@ -10,31 +10,13 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Board extends JPanel {
+public class Board extends JPanel implements IHashMaps {
     public static ArrayList<Tile> board;
     public static boolean whiteTurn;
     public static int enPassant;
-    private static final HashMap<Integer, String> dict = new HashMap<Integer, String>(){
-        {
-            put(1, "a"); put(2, "b"); put(3, "c"); put(4, "d"); put(5, "e"); put(6, "f");
-            put(7, "g"); put(8, "h"); put(9, "i"); put(10, "k"); put(11, "l");
-        }
-    };
-    private static final HashMap<String, Integer> revdict = new HashMap<String, Integer>(){
-        {
-            put("a", 1); put("b", 2); put("c", 3); put("d", 4); put("e", 5); put("f", 6);
-            put("g", 7); put("h", 8); put("i", 9); put("k", 10); put("l", 11);
-        }
-    };
-    private static final HashMap<String, Integer> offset = new HashMap<String, Integer>(){
-        {
-            put("a", 0); put("b", 1); put("c", 2); put("d", 3); put("e", 4); put("f", 5);
-            put("l", 0); put("k", 1); put("i", 2); put("h", 3); put("g", 4);
-        }
-    };
     private static double scale;
     private static int clickedIndex = -1;
-
+    private static ArrayList<Integer> moves = new ArrayList<>();
     public String getPosition() {
         return position;
     }
@@ -68,24 +50,13 @@ public class Board extends JPanel {
                 }
                 boolean color = (this.position.charAt(index) == Character.toUpperCase(this.position.charAt(index)));
                 switch (this.position.charAt(index)) {
-                    case 'p', 'P' -> {
-                        tile.setPiece(new Pawn(i, dict.get(j), color));
-                    }
-                    case 'n', 'N' -> {
-                        tile.setPiece(new Knight(i, dict.get(j), color));
-                    }
-                    case 'b', 'B' -> {
-                        tile.setPiece(new Bishop(i, dict.get(j), color));
-                    }
-                    case 'r', 'R' -> {
-                        tile.setPiece(new Rook(i, dict.get(j), color));
-                    }
-                    case 'q', 'Q' -> {
-                        tile.setPiece(new Queen(i, dict.get(j), color));
-                    }
-                    case 'k', 'K' -> {
-                        tile.setPiece(new King(i, dict.get(j), color));
-                    }
+                    case 'p', 'P' -> tile.setPiece(new Pawn(i, dict.get(j), color));
+
+                    case 'n', 'N' -> tile.setPiece(new Knight(i, dict.get(j), color));
+                    case 'b', 'B' -> tile.setPiece(new Bishop(i, dict.get(j), color));
+                    case 'r', 'R' -> tile.setPiece(new Rook(i, dict.get(j), color));
+                    case 'q', 'Q' -> tile.setPiece(new Queen(i, dict.get(j), color));
+                    case 'k', 'K' -> tile.setPiece(new King(i, dict.get(j), color));
                     case '/' -> {
                         index++;
                         j--;
@@ -122,12 +93,12 @@ public class Board extends JPanel {
         this.position = position;
         Board.scale = 1;
         this.setPosition(position, whiteTurn, enPassant);
-        System.out.println(board);
         addMouseListener(new MouseAdapter() {
 
             @Override
             public void mouseClicked(MouseEvent e) {
                 int startheight = -300;
+
                 for (int i = 0; i < 121; i++) {
                     Tile tile = board.get(i);
                     if(tile == null){
@@ -141,7 +112,9 @@ public class Board extends JPanel {
                     if (e.getX() > startx && e.getX() < startx + length &&
                         e.getY() > starty && e.getY() < starty + length
                     ){
+
                         if (Board.clickedIndex == i){
+                            Board.moves = new ArrayList<>();
                             for (int j = 0; j < 121; j++) {
                                 Tile tile2 = board.get(j);
                                 if(tile2 == null){
@@ -160,6 +133,19 @@ public class Board extends JPanel {
                 if(Board.clickedIndex < 0){
                     return;
                 }
+                if (Board.board.get(Board.clickedIndex).getPiece().isWhite() != whiteTurn){
+                    Board.clickedIndex = -1;
+                    Board.moves = new ArrayList<>();
+                    for (int i = 0; i < 121; i++) {
+                        Tile tile = board.get(i);
+                        if(tile == null){
+                            continue;
+                        }
+                        tile.setMoveIndicator(false);
+                    }
+                    repaint();
+                    return;
+                }
                 for (int i = 0; i < 121; i++) {
                     Tile tile = board.get(i);
                     if(tile == null){
@@ -167,7 +153,9 @@ public class Board extends JPanel {
                     }
                     tile.setMoveIndicator(false);
                 }
-                for(int index: board.get(Board.clickedIndex).getPiece().getPossibleMoves()){
+
+                Board.moves = board.get(Board.clickedIndex).getPiece().getPossibleMoves();
+                for(int index: Board.moves){
                     Tile tile = board.get(index);
 
                     if(tile != null){ tile.setMoveIndicator(true);}

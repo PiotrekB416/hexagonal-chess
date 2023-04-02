@@ -31,5 +31,9 @@ public class Knight extends Piece{
 
         return image;
     }
+    @Override
+    public boolean isWhite() {
+        return white;
+    }
 
 }
