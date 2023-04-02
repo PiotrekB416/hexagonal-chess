@@ -11,7 +11,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Board extends JPanel {
-    public ArrayList<Tile> board;
+    public static ArrayList<Tile> board;
+    public static boolean whiteTurn;
+    public static int enPassant;
     private static final HashMap<Integer, String> dict = new HashMap<Integer, String>(){
         {
             put(1, "a"); put(2, "b"); put(3, "c"); put(4, "d"); put(5, "e"); put(6, "f");
@@ -32,11 +34,14 @@ public class Board extends JPanel {
     };
     private static double scale;
 
+
     public String getPosition() {
         return position;
     }
 
-    public void setPosition(String position) {
+    public void setPosition(String position, boolean whiteTurn, int enPassant) {
+        this.whiteTurn = whiteTurn;
+        this.enPassant = enPassant;
         this.position = position;
         int size = 11;
         board = new ArrayList<>();
@@ -108,10 +113,10 @@ public class Board extends JPanel {
 
     private String position;
 
-    public Board(String position){
+    public Board(String position, boolean whiteTurn, int enPassant){
         this.position = position;
         Board.scale = 1;
-        this.setPosition(position);
+        this.setPosition(position, whiteTurn, enPassant);
         System.out.println(board);
         addMouseListener(new MouseAdapter() {
 

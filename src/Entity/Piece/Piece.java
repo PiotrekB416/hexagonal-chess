@@ -1,5 +1,6 @@
 package Entity.Piece;
 
+import App.Board;
 import Entity.Entity;
 
 import javax.swing.*;
@@ -29,72 +30,7 @@ public abstract class Piece extends Entity {
         ArrayList<Integer> moves = new ArrayList<>();
 
             for (int[] i : moveArray){
-//                int mult = 1;
-//                int offset_mult = 0;
-//                int offset = 0;
-//                if (revdict.get(file) < 6){
-//                    offset_mult = 1;
-//                } else if (revdict.get(file) > 6) {
-//                    offset_mult = -1;
-//                }
-//                offset = (offset_mult * i[1] > 0) ? 1 : 0;
-//                if (rep){
-//                    offset = 0;
-//                }
-//
-//                do {
-//                    int pos = ((11 - rank) - (i[0] + offset) * mult) * 11 + (revdict.get(file) + (i[1]) * mult) -1;
-//                    int r = rank + i[0] * mult;
-//                    int f = revdict.get(file) + i[1] * mult;
-//
-//                    if ((r > 11 || r < 1 || f > 11 || f < 1)
-//                    ) {
-//                        break;
-//                    }
-//                    moves.add(pos);
-//                    mult++;
-//                } while (rep);
-
-//                int mult = 1;
-//                int offset = 0;
-//                int offset2 = 0;
-//                String test_file = file;
-//
-//                do{
-//                    int f = revdict.get(file) + i[1] * mult;
-//                    test_file = dict.get(f);
-//                    if(test_file == null){
-//                        break;
-//                    }
-//                    switch (test_file){
-//                        case "a", "b", "c", "d", "e" -> {
-//                            offset = (i[1] > 0) ? 1 : 0;
-//                            if (revdict.get(file) >= 6){
-//                                offset2 = 6 - revdict.get(file);
-//                            }
-//                        }
-//                        case "f" -> {
-//                            offset = 0;
-//                        }
-//                        case "g", "h", "i", "k", "l" -> {
-//                            offset = (i[1] < 0) ? 1 : 0;
-//                            if (revdict.get(file) <= 6){
-//                                offset2 = 6 - revdict.get(file);
-//                            }
-//                        }
-//
-//                    }
-//                    int r = rank + (i[0] + offset) * mult;
-//                    int pos = ((11 - rank) - (i[0] + offset) * mult + offset2)  * 11 + (revdict.get(file) + (i[1] * mult)) -1;
-//                    if ((r > 11 || r < 1 || f > 11 || f < 1)
-//                    ) {
-//                        break;
-//                    }
-//                    moves.add(pos);
-//                    mult++;
-//                    test_file = dict.get(f);
-//                } while (rep);
-
+                int startpos = (11 - rank) * 11 + revdict.get(file) - 1;
                 boolean repeat = rep;
                 int[] testpos = new int[]{revdict.get(file), rank};
                 HashMap<Integer, int[]> neighboringMap = null;
@@ -152,11 +88,36 @@ public abstract class Piece extends Entity {
                     }
                     testpos = new int[]{f, r};
                     int pos = (11 - r) * 11 + f - 1;
-                    moves.add(pos);
+                    if (Board.board.get(pos) == null){
+                        break;
+                    }
+                    if(Board.board.get(startpos).getPiece().getClass() == Pawn.class) {
+                        if (revdict.get(file) - f != 0){
+                            if (pos == Board.enPassant){
+                                moves.add(pos);
+                                continue;
+                            }
+                            if (Board.board.get(pos).getPiece().getClass() != Empty.class & Board.board.get(pos).getPiece().isWhite() != Board.board.get(startpos).getPiece().isWhite()){
+                                moves.add(pos);
+                                continue;
+                            }
+                            continue;
+                        }
+                    }
+                    if (Board.board.get(pos).getPiece().getClass() == Empty.class){
+                        moves.add(pos);
+                        continue;
+                    }
+
+                    if(Board.board.get(pos).getPiece().isWhite() != Board.board.get(startpos).getPiece().isWhite()){
+                        moves.add(pos);
+                    }
+                    break;
 
                 } while (repeat);
 
             }
+
         return moves;
     }
     public ArrayList<Integer> getPossibleMoves(){
@@ -167,4 +128,8 @@ public abstract class Piece extends Entity {
         return new ImageIcon().getImage();
     }
 
+    private boolean white;
+    public boolean isWhite() {
+        return white;
+    }
 }

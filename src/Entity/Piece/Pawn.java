@@ -38,12 +38,12 @@ public class Pawn extends Piece {
         int file = super.revdict.get(this.file);
 
         int[][] moveArray = new int[][]{
-                {0, -1}, {2, -1}, {10, -1}
+                {0}, {2}, {10}
         };
         if (orgpos[file] == this.rank){
             //ret.add((this.rank + 2) * 11 + file + 0);
             moveArray = new int[][]{
-                    {0, 0}, {0, -1}, {2, -1}, {10, -1}
+                    {0, 0}, {0}, {2}, {10}
             };
         }
         return generateMovesFromArray(moveArray, this.rank, this.file, false);
@@ -54,12 +54,12 @@ public class Pawn extends Piece {
         int file = this.revdict.get(this.file);
 
         int[][] moveArray = new int[][]{
-                {6, -1}, {4, -1}, {8, -1}
+                {6}, {4}, {8}
         };
         if (this.rank == 7){
             //ret.add((this.rank + 2) * 11 + file + 0);
             moveArray = new int[][]{
-                    {6, 6}, {6, -1}, {4, -1}, {8, -1}
+                    {6, 6}, {6}, {4}, {8}
             };
         }
         return generateMovesFromArray(moveArray, this.rank, this.file, false);

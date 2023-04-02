@@ -21,7 +21,7 @@ public class Bishop extends Piece {
         ArrayList<Integer> ret = new ArrayList();
         //int file = this.revdict.get(this.file);
         int[][] moveArray = new int[][]{
-                {1, -1}, {3, -1}, {5, -1}, {7, -1}, {9, -1}, {11, -1}
+                {1}, {3}, {5}, {7}, {9}, {11}
         };
 
         return generateMovesFromArray(moveArray, this.rank, this.file, true);

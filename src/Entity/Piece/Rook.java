@@ -7,6 +7,7 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 public class Rook extends Piece {
+
     private boolean white;
     public Rook(int rank, String file, boolean white) {
         super(rank, file);
@@ -23,7 +24,7 @@ public class Rook extends Piece {
         ArrayList<Integer> ret = new ArrayList();
         //int file = this.revdict.get(this.file);
         int[][] moveArray = new int[][]{
-                {0, -1}, {2, -1}, {4, -1}, {6, -1}, {8, -1}, {10, -1}
+                {0}, {2}, {4}, {6}, {8}, {10}
         };
 
         return generateMovesFromArray(moveArray, this.rank, this.file, true);
