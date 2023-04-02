@@ -1,0 +1,42 @@
+package Entity.Piece;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+
+public class Queen extends Piece {
+    private boolean white;
+    public Queen(int rank, String file, boolean white) {
+        super(rank, file);
+        this.white = white;
+    }
+
+    @Override
+    public ArrayList<Integer> getPossibleMoves(){
+        return getMoves();
+    }
+
+    private ArrayList<Integer> getMoves(){
+
+        ArrayList<Integer> ret = new ArrayList();
+        //int file = this.revdict.get(this.file);
+        int[][] moveArray = new int[][]{
+                {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}
+        };
+
+        return generateMovesFromArray(moveArray, this.rank, this.file, true);
+    }
+
+    @Override
+    public Image getTexture() {
+        String color = "black";
+        if (this.white){
+            color = "white";
+        }
+        String file = "src/Images/" + color + "/queen.png";
+
+        Image image = new ImageIcon(file).getImage();
+
+        return image;
+    }
+}

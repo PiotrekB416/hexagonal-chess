@@ -33,7 +33,7 @@ public class Board extends JPanel {
         }
     };
     private static double scale;
-
+    private static int clickedIndex = -1;
 
     public String getPosition() {
         return position;
@@ -80,7 +80,12 @@ public class Board extends JPanel {
                     case 'r', 'R' -> {
                         tile.setPiece(new Rook(i, dict.get(j), color));
                     }
-
+                    case 'q', 'Q' -> {
+                        tile.setPiece(new Queen(i, dict.get(j), color));
+                    }
+                    case 'k', 'K' -> {
+                        tile.setPiece(new King(i, dict.get(j), color));
+                    }
                     case '/' -> {
                         index++;
                         j--;
@@ -123,7 +128,6 @@ public class Board extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int startheight = -300;
-                int clicked_index = -1;
                 for (int i = 0; i < 121; i++) {
                     Tile tile = board.get(i);
                     if(tile == null){
@@ -137,12 +141,23 @@ public class Board extends JPanel {
                     if (e.getX() > startx && e.getX() < startx + length &&
                         e.getY() > starty && e.getY() < starty + length
                     ){
-                        clicked_index = i;
+                        if (Board.clickedIndex == i){
+                            for (int j = 0; j < 121; j++) {
+                                Tile tile2 = board.get(j);
+                                if(tile2 == null){
+                                    continue;
+                                }
+                                tile2.setMoveIndicator(false);
+                            }
+                            repaint();
+                            return;
+                        }
+                        Board.clickedIndex = i;
                         break;
 
                     }
                 }
-                if(clicked_index < 0){
+                if(Board.clickedIndex < 0){
                     return;
                 }
                 for (int i = 0; i < 121; i++) {
@@ -152,7 +167,7 @@ public class Board extends JPanel {
                     }
                     tile.setMoveIndicator(false);
                 }
-                for(int index: board.get(clicked_index).getPiece().getPossibleMoves()){
+                for(int index: board.get(Board.clickedIndex).getPiece().getPossibleMoves()){
                     Tile tile = board.get(index);
 
                     if(tile != null){ tile.setMoveIndicator(true);}
