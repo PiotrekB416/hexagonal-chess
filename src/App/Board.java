@@ -8,6 +8,8 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class Board extends JPanel implements IHashMaps {
@@ -51,7 +53,6 @@ public class Board extends JPanel implements IHashMaps {
                 boolean color = (this.position.charAt(index) == Character.toUpperCase(this.position.charAt(index)));
                 switch (this.position.charAt(index)) {
                     case 'p', 'P' -> tile.setPiece(new Pawn(i, dict.get(j), color));
-
                     case 'n', 'N' -> tile.setPiece(new Knight(i, dict.get(j), color));
                     case 'b', 'B' -> tile.setPiece(new Bishop(i, dict.get(j), color));
                     case 'r', 'R' -> tile.setPiece(new Rook(i, dict.get(j), color));
@@ -69,7 +70,7 @@ public class Board extends JPanel implements IHashMaps {
                         if (this.position.length() == (index +1)){
                             break;
                         }
-                        if (this.position.charAt(index +1) != '0' && this.position.charAt(index +1) != '1'){
+                        if (this.position.charAt(index + 1) != '0' && this.position.charAt(index +1) != '1'){
                             break;
                         }
                         wait = Integer.parseInt(String.valueOf(this.position.charAt(index)) + this.position.charAt(index +1)) -1;
@@ -185,7 +186,7 @@ public class Board extends JPanel implements IHashMaps {
 
             g.drawImage(tile.getTexture(), (int) (hoffset * Board.scale), (int) ((startheight + (100 * (12 - tile.getRank())) + offset) * Board.scale), (int) (115 * Board.scale), (int) (100 * Board.scale), this);
             if (tile.getPiece() != null) {
-                g.drawImage(tile.getPiece().getTexture(), (int) ((hoffset + 17.5) * this.scale), (int) ((startheight + (100 * (12 - tile.getRank())) + offset + 10) * Board.scale), (int) (80 * Board.scale), (int) (80 * Board.scale), this);
+                g.drawImage(tile.getPiece().getTexture(), (int) ((hoffset + 17.5) * Board.scale), (int) ((startheight + (100 * (12 - tile.getRank())) + offset + 10) * Board.scale), (int) (80 * Board.scale), (int) (80 * Board.scale), this);
             }
             g.drawImage(tile.getMoveIndicatorTexture(), (int) ((hoffset + 42.5) * Board.scale), (int) ((startheight + (100 * (12 - tile.getRank())) + offset + 35) * Board.scale), (int) (30 * Board.scale), (int) (30 * Board.scale), this);
 
@@ -193,5 +194,137 @@ public class Board extends JPanel implements IHashMaps {
             //g.drawImage(hex, 100, 100,   this);
         }
 
+    }
+
+    private static void movePiece(Tile origin, Tile destination){
+        destination.setPiece(origin.getPiece());
+        origin.setPiece(new Empty(origin.getRank(), origin.getFile()));
+        destination.getPiece().setFile(origin.getFile());
+        destination.getPiece().setRank(origin.getRank());
+        whiteTurn = !whiteTurn;
+
+    }
+    private static ArrayList<Integer> findChecks(ArrayList<Tile> board){
+        return findChecks(board,-1);
+    }
+
+    private static ArrayList<Integer> findChecks(ArrayList<Tile> board, int ignore){
+        ArrayList<Integer> checkingIndexes = new ArrayList<>();
+        int kingPosition = -1;
+        for(int i = 0; i < 121; i++){
+            Tile tile = board.get(i);
+            if(tile == null){
+                continue;
+            }
+            System.out.println(tile.getPiece());
+            if(tile.getPiece().getClass() != King.class || tile.getPiece().isWhite() != whiteTurn){
+                continue;
+            }
+            kingPosition = i;
+        }
+        int rank = board.get(kingPosition).getRank();
+        String file = board.get(kingPosition).getFile();
+        // look for knight checks
+        {
+            int[][] moveArray = {{1, 0}, {1, 2}, {3, 2}, {3, 4}, {5, 4}, {5, 6}, {7, 6}, {7, 8}, {9, 8}, {9, 10}, {11, 10}, {11, 0}};
+            ArrayList<Integer> possibleKnightChecks = Piece.generateMovesFromArray(moveArray, rank, file, false, false);
+            for(int move : possibleKnightChecks){
+                if(move < 0){
+                    continue;
+                }
+                if (board.get(move) == null){
+                    continue;
+                }
+                if (board.get(move).getPiece().getClass() != Knight.class){
+                    continue;
+                }
+                if (board.get(move).getPiece().isWhite() == whiteTurn){
+                    continue;
+                }
+                checkingIndexes.add(move);
+            }
+        }
+        // look for bishop or queen checks
+        int[][][] moveArrayArray = new int[][][]{{{1}, {3}, {5}, {7}, {9}, {11}}, {{0}, {2}, {4}, {6}, {8}, {10}}};
+        Class[] classes = new Class[]{Bishop.class, Rook.class};
+
+        for(int i = 0; i < 2; i++){
+            int[][] moveArray = moveArrayArray[i];
+            ArrayList<Integer> Return = Piece.generateMovesFromArray(moveArray, rank, file, false, false);
+            ArrayList<ArrayList<Integer>> possibleChecks = new ArrayList<>();
+            int bishopIndex = -1;
+            for (int move : Return) {
+                if (move < 0) {
+                    bishopIndex++;
+                    possibleChecks.add(new ArrayList<>());
+                    continue;
+                }
+                possibleChecks.get(bishopIndex).add(move);
+
+            }
+            for (ArrayList<Integer> line : possibleChecks) {
+                for (int move : line) {
+                    if (move == ignore) {
+                        continue;
+                    }
+                    Tile tile = board.get(move);
+                    if (tile == null) {
+                        continue;
+                    }
+                    if (tile.getPiece().getClass() != classes[i] && tile.getPiece().getClass() != Queen.class) {
+                        break;
+                    }
+                    if (tile.getPiece().isWhite() == whiteTurn) {
+                        break;
+                    }
+                    checkingIndexes.add(move);
+                }
+            }
+        }
+
+        return checkingIndexes;
+    }
+
+    public static boolean validateMove(int origin, int destination){
+        if(board.get(origin).getPiece().isWhite() == board.get(destination).getPiece().isWhite()){
+            return false;
+        }
+        ArrayList<Tile> testboard = new ArrayList<>();
+        for(Tile tile : board){
+            if(tile == null){
+                testboard.add(null);
+                continue;
+            }
+            Tile tile2 = new Tile(tile.getRank(), tile.getFile());
+            Piece piece = new Pawn(tile.getPiece().getRank(), tile.getPiece().getFile(), tile.getPiece().isWhite());
+            if(tile.getPiece().getClass() == Knight.class){
+                piece = new Knight(tile.getPiece().getRank(), tile.getPiece().getFile(), tile.getPiece().isWhite());
+            } else if(tile.getPiece().getClass() == Bishop.class){
+                piece = new Bishop(tile.getPiece().getRank(), tile.getPiece().getFile(), tile.getPiece().isWhite());
+            } else if(tile.getPiece().getClass() == Rook.class){
+                piece = new Rook(tile.getPiece().getRank(), tile.getPiece().getFile(), tile.getPiece().isWhite());
+            } else if(tile.getPiece().getClass() == Queen.class){
+                piece = new Queen(tile.getPiece().getRank(), tile.getPiece().getFile(), tile.getPiece().isWhite());
+            } else if(tile.getPiece().getClass() == King.class){
+                piece = new King(tile.getPiece().getRank(), tile.getPiece().getFile(), tile.getPiece().isWhite());
+            }
+            tile2.setPiece(piece);
+            testboard.add(tile2);
+        }
+        //movePiece(testboard.get(origin), testboard.get(destination));
+        Piece dest = testboard.get(destination).getPiece();
+        int destRank = dest.getRank();
+        String destFile = dest.getFile();
+        Piece orig = testboard.get(origin).getPiece();
+        int origRank = orig.getRank();
+        String origFile = orig.getFile();
+
+        testboard.get(origin).setPiece(new Empty(origRank, origFile));
+        orig.setFile(destFile);
+        orig.setRank(destRank);
+        testboard.get(destination).setPiece(orig);
+
+        ArrayList<Integer> checks = Board.findChecks(testboard);
+        return (checks.size() == 0);
     }
 }

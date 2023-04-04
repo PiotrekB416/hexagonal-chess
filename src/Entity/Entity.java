@@ -2,9 +2,6 @@ package Entity;
 
 import App.IHashMaps;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 abstract public class Entity implements IHashMaps {
 
     public int getRank() {
@@ -12,6 +9,14 @@ abstract public class Entity implements IHashMaps {
     }
     public String getFile() {
         return file;
+    }
+
+    public void setRank(int rank) {
+        this.rank = rank;
+    }
+
+    public void setFile(String file) {
+        this.file = file;
     }
 
     protected int rank;

@@ -27,7 +27,7 @@ public class Rook extends Piece {
                 {0}, {2}, {4}, {6}, {8}, {10}
         };
 
-        return generateMovesFromArray(moveArray, this.rank, this.file, true);
+        return generateMovesFromArray(moveArray, this.rank, this.file, true, true);
     }
 
     @Override

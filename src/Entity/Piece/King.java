@@ -24,7 +24,7 @@ public class King extends Piece {
                 {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}
         };
 
-        return generateMovesFromArray(moveArray, this.rank, this.file, false);
+        return generateMovesFromArray(moveArray, this.rank, this.file, false, true);
     }
 
     @Override
@@ -43,4 +43,5 @@ public class King extends Piece {
     public boolean isWhite() {
         return white;
     }
+
 }

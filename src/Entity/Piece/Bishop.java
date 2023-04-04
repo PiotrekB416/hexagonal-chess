@@ -24,7 +24,7 @@ public class Bishop extends Piece {
                 {1}, {3}, {5}, {7}, {9}, {11}
         };
 
-        return generateMovesFromArray(moveArray, this.rank, this.file, true);
+        return generateMovesFromArray(moveArray, this.rank, this.file, true, true);
     }
 
     @Override

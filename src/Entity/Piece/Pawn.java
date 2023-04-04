@@ -46,7 +46,7 @@ public class Pawn extends Piece {
                     {0, 0}, {0}, {2}, {10}
             };
         }
-        return generateMovesFromArray(moveArray, this.rank, this.file, false);
+        return generateMovesFromArray(moveArray, this.rank, this.file, false, true);
     }
     private ArrayList<Integer> getBlackMoves(){
         ArrayList<Integer> ret = new ArrayList();
@@ -62,7 +62,7 @@ public class Pawn extends Piece {
                     {6, 6}, {6}, {4}, {8}
             };
         }
-        return generateMovesFromArray(moveArray, this.rank, this.file, false);
+        return generateMovesFromArray(moveArray, this.rank, this.file, false, true);
 
 
     }
