@@ -286,9 +286,6 @@ public class Board extends JPanel implements IHashMaps {
     }
 
     public static boolean validateMove(int origin, int destination){
-        if(board.get(origin).getPiece().isWhite() == board.get(destination).getPiece().isWhite()){
-            return false;
-        }
         ArrayList<Tile> testboard = new ArrayList<>();
         for(Tile tile : board){
             if(tile == null){

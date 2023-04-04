@@ -87,6 +87,9 @@ public abstract class Piece extends Entity {
                     if (Board.board.get(pos) == null) {
                         break;
                     }
+                    if (Board.board.get(pos).getPiece().isWhite() == Board.board.get(startpos).getPiece().isWhite()) {
+                        break;
+                    }
                     if(!Board.validateMove(startpos, pos)){
                         continue;
                     }
@@ -111,10 +114,6 @@ public abstract class Piece extends Entity {
                         moves.add(pos);
                         continue;
                     }
-
-//                    if (Board.board.get(pos).getPiece().isWhite() == Board.board.get(startpos).getPiece().isWhite()) {
-//                        break;
-//                    }
                     if(!Board.validateMove(startpos, pos)){
                         System.out.println("here");
                         continue;
