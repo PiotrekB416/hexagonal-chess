@@ -14,6 +14,14 @@ abstract public class Entity implements IHashMaps {
         return file;
     }
 
+    public void setRank(int rank) {
+        this.rank = rank;
+    }
+
+    public void setFile(String file) {
+        this.file = file;
+    }
+
     protected int rank;
     protected String file;
 

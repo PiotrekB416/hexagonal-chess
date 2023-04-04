@@ -69,7 +69,7 @@ public class Board extends JPanel implements IHashMaps {
                         if (this.position.length() == (index +1)){
                             break;
                         }
-                        if (this.position.charAt(index +1) != '0' && this.position.charAt(index +1) != '1'){
+                        if (this.position.charAt(index + 1) != '0' && this.position.charAt(index +1) != '1'){
                             break;
                         }
                         wait = Integer.parseInt(String.valueOf(this.position.charAt(index)) + this.position.charAt(index +1)) -1;
@@ -91,7 +91,7 @@ public class Board extends JPanel implements IHashMaps {
 
     public Board(String position, boolean whiteTurn, int enPassant){
         this.position = position;
-        Board.scale = 1;
+        Board.scale = .7;
         this.setPosition(position, whiteTurn, enPassant);
         addMouseListener(new MouseAdapter() {
 
@@ -193,5 +193,21 @@ public class Board extends JPanel implements IHashMaps {
             //g.drawImage(hex, 100, 100,   this);
         }
 
+    }
+    private static void movePiece(Tile origin, Tile destination){
+        if(validateMove(origin, destination)){
+            destination.setPiece(origin.getPiece());
+            origin.setPiece(new Empty(origin.getRank(), origin.getFile()));
+            destination.getPiece().setFile(origin.getFile());
+            destination.getPiece().setRank(origin.getRank());
+            whiteTurn = ! whiteTurn;
+        }
+
+
+
+    }
+    public static boolean validateMove(Tile origin, Tile destination){
+        // TODO
+        return true;
     }
 }
