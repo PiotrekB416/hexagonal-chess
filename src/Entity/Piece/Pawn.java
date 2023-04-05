@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Pawn extends Piece {
-    private boolean white;
-    public Pawn(int rank, String file, boolean white){
+    private int white;
+    public Pawn(int rank, String file, int white){
         super(rank, file);
         this.white = white;
     }
@@ -24,7 +24,7 @@ public class Pawn extends Piece {
 
     @Override
     public ArrayList<Integer> getPossibleMoves(){
-        if (this.white){
+        if (this.white == 1){
             return this.getWhiteMoves();
         }
         return getBlackMoves();
@@ -69,7 +69,7 @@ public class Pawn extends Piece {
     @Override
     public Image getTexture() {
         String color = "black";
-        if (this.white){
+        if (this.white == 1){
             color = "white";
         }
         String file = "src/Images/" + color + "/pawn.png";
@@ -79,7 +79,7 @@ public class Pawn extends Piece {
         return image;
     }
     @Override
-    public boolean isWhite() {
+    public int isWhite() {
         return white;
     }
 }

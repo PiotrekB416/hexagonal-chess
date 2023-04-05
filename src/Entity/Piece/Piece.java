@@ -12,7 +12,7 @@ import java.util.HashMap;
 public abstract class Piece extends Entity {
     public Piece(int rank, String file){
         super(rank, file);
-
+        this.white = -1;
     }
     public static HashMap<Integer, int[]> generateNeighboringMap(int file){
         HashMap<Integer, int[]> neighboringMap = null;
@@ -56,10 +56,10 @@ public abstract class Piece extends Entity {
         }
         return neighboringMap;
     }
-    public static ArrayList<Integer> generateMovesFromArray(int[][] moveArray, int rank, String file, boolean rep, boolean vaidate){
+    public static ArrayList<Integer> generateMovesFromArray(int[][] moveArray, int rank, String file, boolean rep, boolean validate){
         ArrayList<Integer> moves = new ArrayList<>();
         for (int[] i : moveArray){
-            if(!vaidate){
+            if(!validate){
                 moves.add(-1);
             }
             int startpos = (11 - rank) * 11 + revdict.get(file) - 1;
@@ -83,11 +83,15 @@ public abstract class Piece extends Entity {
                 }
                 testpos = new int[]{f, r};
                 int pos = (11 - r) * 11 + f - 1;
-                System.out.println(pos);
+                //System.out.println(pos);
                 if(Board.board.get(pos) == null){
                     break;
                 }
-                if(vaidate) {
+                if(validate) {
+                    if(Board.enPassant == pos){
+                        moves.add(pos);
+                        break;
+                    }
                     if (Board.board.get(pos).getPiece().isWhite() == Board.board.get(startpos).getPiece().isWhite()) {
                         break;
                     }
@@ -122,7 +126,10 @@ public abstract class Piece extends Entity {
                     break;
 
                 } else {
-
+                    if(Board.enPassant == pos){
+                        moves.add(pos);
+                        break;
+                    }
                     if (Board.board.get(pos).getPiece().isWhite() == Board.board.get(startpos).getPiece().isWhite()) {
                         break;
                     }
@@ -146,8 +153,8 @@ public abstract class Piece extends Entity {
         return new ImageIcon().getImage();
     }
 
-    private boolean white;
-    public boolean isWhite() {
+    private int white;
+    public int isWhite() {
         return white;
     }
 

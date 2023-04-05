@@ -5,8 +5,8 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class Knight extends Piece{
-    private boolean white;
-    public Knight(int rank, String file, boolean white){
+    private int white;
+    public Knight(int rank, String file, int white){
         super(rank, file);
         this.white = white;
     }
@@ -22,7 +22,7 @@ public class Knight extends Piece{
     @Override
     public Image getTexture() {
         String color = "black";
-        if (this.white){
+        if (this.white == 1){
             color = "white";
         }
         String file = "src/Images/" + color + "/knight.png";
@@ -32,7 +32,7 @@ public class Knight extends Piece{
         return image;
     }
     @Override
-    public boolean isWhite() {
+    public int isWhite() {
         return white;
     }
 

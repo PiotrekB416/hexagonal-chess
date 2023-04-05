@@ -5,8 +5,8 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class Bishop extends Piece {
-    private boolean white;
-    public Bishop(int rank, String file, boolean white) {
+    private int white;
+    public Bishop(int rank, String file, int white) {
         super(rank, file);
         this.white = white;
     }
@@ -30,7 +30,7 @@ public class Bishop extends Piece {
     @Override
     public Image getTexture() {
         String color = "black";
-        if (this.white){
+        if (this.white == 1){
             color = "white";
         }
         String file = "src/Images/" + color + "/bishop.png";
@@ -40,7 +40,7 @@ public class Bishop extends Piece {
         return image;
     }
     @Override
-    public boolean isWhite() {
+    public int isWhite() {
         return white;
     }
 }
