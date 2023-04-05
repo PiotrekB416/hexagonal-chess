@@ -83,11 +83,15 @@ public abstract class Piece extends Entity {
                 }
                 testpos = new int[]{f, r};
                 int pos = (11 - r) * 11 + f - 1;
+                System.out.println(pos);
+                if(Board.board.get(pos) == null){
+                    break;
+                }
                 if(vaidate) {
-                    if (Board.board.get(pos) == null) {
+                    if (Board.board.get(pos).getPiece().isWhite() == Board.board.get(startpos).getPiece().isWhite()) {
                         break;
                     }
-                    if (Board.board.get(pos).getPiece().isWhite() == Board.board.get(startpos).getPiece().isWhite()) {
+                    if(Board.board.get(pos) == null){
                         break;
                     }
                     if(!Board.validateMove(startpos, pos)){
@@ -114,15 +118,15 @@ public abstract class Piece extends Entity {
                         moves.add(pos);
                         continue;
                     }
-                    if(!Board.validateMove(startpos, pos)){
-                        System.out.println("here");
-                        continue;
-                    }
-                    System.out.println("here");
                     moves.add(pos);
+                    break;
 
                 } else {
+
                     if (Board.board.get(pos).getPiece().isWhite() == Board.board.get(startpos).getPiece().isWhite()) {
+                        break;
+                    }
+                    if(Board.board.get(pos) == null){
                         break;
                     }
                     moves.add(pos);
