@@ -12,7 +12,6 @@ import java.util.HashMap;
 public abstract class Piece extends Entity {
     public Piece(int rank, String file){
         super(rank, file);
-        this.white = -1;
     }
     public static HashMap<Integer, int[]> generateNeighboringMap(int file){
         HashMap<Integer, int[]> neighboringMap = null;
@@ -77,6 +76,9 @@ public abstract class Piece extends Entity {
                     r += neighboringMap.get(j)[0];
                     f += neighboringMap.get(j)[1];
                     testpos = new int[]{f, r};
+                    if(r < 1 || r > 11 || f < 1 || f > 11){
+                        break;
+                    }
                 }
                 if(r < 1 || r > 11 || f < 1 || f > 11){
                     break;
@@ -126,13 +128,6 @@ public abstract class Piece extends Entity {
                     break;
 
                 } else {
-                    if(Board.enPassant == pos){
-                        moves.add(pos);
-                        break;
-                    }
-                    if (Board.board.get(pos).getPiece().isWhite() == Board.board.get(startpos).getPiece().isWhite()) {
-                        break;
-                    }
                     if(Board.board.get(pos) == null){
                         break;
                     }
@@ -153,9 +148,8 @@ public abstract class Piece extends Entity {
         return new ImageIcon().getImage();
     }
 
-    private int white;
     public int isWhite() {
-        return white;
+        return -1;
     }
 
 }

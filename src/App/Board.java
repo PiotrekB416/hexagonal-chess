@@ -50,7 +50,7 @@ public class Board extends JPanel implements IHashMaps {
                     board.add(tile);
                     continue;
                 }
-                int color = (this.position.charAt(index) == Character.toUpperCase(this.position.charAt(index))) ? 1 : 0;
+                int color = (this.position.charAt(index) == Character.toUpperCase(this.position.charAt(index)) ? 1 : 0);
                 switch (this.position.charAt(index)) {
                     case 'p', 'P' -> tile.setPiece(new Pawn(i, dict.get(j), color));
                     case 'n', 'N' -> tile.setPiece(new Knight(i, dict.get(j), color));
@@ -223,6 +223,7 @@ public class Board extends JPanel implements IHashMaps {
     }
 
     private static void movePiece(int origin, int destination){
+
         Piece dest = board.get(destination).getPiece();
         int destRank = dest.getRank();
         String destFile = dest.getFile();
@@ -245,15 +246,20 @@ public class Board extends JPanel implements IHashMaps {
                 if (orig.isWhite() == 1){
                     Board.enPassant = origin - 11;
                 }
+            } else {
+                Board.enPassant = -1;
             }
+        } else {
+            Board.enPassant = -1;
         }
         Board.whiteTurn = 1 - Board.whiteTurn;
     }
     private static ArrayList<Integer> findChecks(ArrayList<Tile> board){
-        return findChecks(board,-1);
+        return findChecks(board, -1);
     }
 
     private static ArrayList<Integer> findChecks(ArrayList<Tile> board, int ignore){
+
         ArrayList<Integer> checkingIndexes = new ArrayList<>();
         int kingPosition = -1;
         for(int i = 0; i < 121; i++){
@@ -291,21 +297,28 @@ public class Board extends JPanel implements IHashMaps {
             }
         }
         // look for bishop or queen checks
-        int[][][] moveArrayArray = new int[][][]{{{1}, {3}, {5}, {7}, {9}, {11}}, {{0}, {2}, {4}, {6}, {8}, {10}}};
+        int[][][] moveArrayArray = new int[][][]{
+                {
+                    {1}, {3}, {5}, {7}, {9}, {11}
+                },
+                {
+                    {0}, {2}, {4}, {6}, {8}, {10}
+                }
+        };
         Class[] classes = new Class[]{Bishop.class, Rook.class};
 
         for(int i = 0; i < 2; i++){
             int[][] moveArray = moveArrayArray[i];
-            ArrayList<Integer> Return = Piece.generateMovesFromArray(moveArray, rank, file, false, false);
+            ArrayList<Integer> Return = Piece.generateMovesFromArray(moveArray, rank, file, true, false);
             ArrayList<ArrayList<Integer>> possibleChecks = new ArrayList<>();
-            int bishopIndex = -1;
+            int index = -1;
             for (int move : Return) {
                 if (move < 0) {
-                    bishopIndex++;
+                    index++;
                     possibleChecks.add(new ArrayList<>());
                     continue;
                 }
-                possibleChecks.get(bishopIndex).add(move);
+                possibleChecks.get(index).add(move);
 
             }
             for (ArrayList<Integer> line : possibleChecks) {
@@ -317,11 +330,11 @@ public class Board extends JPanel implements IHashMaps {
                     if (tile == null) {
                         continue;
                     }
-                    if (tile.getPiece().getClass() != classes[i] && tile.getPiece().getClass() != Queen.class) {
-                        break;
-                    }
                     if (tile.getPiece().isWhite() == whiteTurn) {
                         break;
+                    }
+                    if (!(tile.getPiece().getClass() == classes[i] || tile.getPiece().getClass() == Queen.class)) {
+                        continue;
                     }
                     checkingIndexes.add(move);
                 }
@@ -339,8 +352,10 @@ public class Board extends JPanel implements IHashMaps {
                 continue;
             }
             Tile tile2 = new Tile(tile.getRank(), tile.getFile());
-            Piece piece = new Pawn(tile.getPiece().getRank(), tile.getPiece().getFile(), tile.getPiece().isWhite());
-            if(tile.getPiece().getClass() == Knight.class){
+            Piece piece = new Empty(tile.getPiece().getRank(), tile.getPiece().getFile());
+            if(tile.getPiece().getClass() == Pawn.class){
+                piece = new Pawn(tile.getPiece().getRank(), tile.getPiece().getFile(), tile.getPiece().isWhite());
+            } else if(tile.getPiece().getClass() == Knight.class){
                 piece = new Knight(tile.getPiece().getRank(), tile.getPiece().getFile(), tile.getPiece().isWhite());
             } else if(tile.getPiece().getClass() == Bishop.class){
                 piece = new Bishop(tile.getPiece().getRank(), tile.getPiece().getFile(), tile.getPiece().isWhite());
@@ -350,10 +365,13 @@ public class Board extends JPanel implements IHashMaps {
                 piece = new Queen(tile.getPiece().getRank(), tile.getPiece().getFile(), tile.getPiece().isWhite());
             } else if(tile.getPiece().getClass() == King.class){
                 piece = new King(tile.getPiece().getRank(), tile.getPiece().getFile(), tile.getPiece().isWhite());
+
             }
+            //System.out.println(tile.getPiece().isWhite());
             tile2.setPiece(piece);
             testboard.add(tile2);
         }
+
         //movePiece(testboard.get(origin), testboard.get(destination));
         Piece dest = testboard.get(destination).getPiece();
         int destRank = dest.getRank();
@@ -366,7 +384,6 @@ public class Board extends JPanel implements IHashMaps {
         orig.setFile(destFile);
         orig.setRank(destRank);
         testboard.get(destination).setPiece(orig);
-
         ArrayList<Integer> checks = Board.findChecks(testboard);
         return (checks.size() == 0);
     }
