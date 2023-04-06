@@ -7,10 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.*;
 
 public class Board extends JPanel implements IHashMaps {
     public static ArrayList<Tile> board;
@@ -297,18 +294,56 @@ public class Board extends JPanel implements IHashMaps {
             }
         }
         // look for bishop or queen checks
-        int[][][] moveArrayArray = new int[][][]{
-                {
-                    {1}, {3}, {5}, {7}, {9}, {11}
-                },
-                {
-                    {0}, {2}, {4}, {6}, {8}, {10}
-                }
-        };
-        Class[] classes = new Class[]{Bishop.class, Rook.class};
+        {
+            int[][][] moveArrayArray = new int[][][]{
+                    {
+                            {1}, {3}, {5}, {7}, {9}, {11}
+                    },
+                    {
+                            {0}, {2}, {4}, {6}, {8}, {10}
+                    }
+            };
+            Class[] classes = new Class[]{Bishop.class, Rook.class};
 
-        for(int i = 0; i < 2; i++){
-            int[][] moveArray = moveArrayArray[i];
+            for (int i = 0; i < 2; i++) {
+                int[][] moveArray = moveArrayArray[i];
+                ArrayList<Integer> Return = Piece.generateMovesFromArray(moveArray, rank, file, true, false);
+                ArrayList<ArrayList<Integer>> possibleChecks = new ArrayList<>();
+                int index = -1;
+                for (int move : Return) {
+                    if (move < 0) {
+                        index++;
+                        possibleChecks.add(new ArrayList<>());
+                        continue;
+                    }
+                    possibleChecks.get(index).add(move);
+
+                }
+                for (ArrayList<Integer> line : possibleChecks) {
+                    for (int move : line) {
+                        if (move == ignore) {
+                            continue;
+                        }
+                        Tile tile = board.get(move);
+                        if (tile == null) {
+                            continue;
+                        }
+                        if (tile.getPiece().isWhite() == whiteTurn) {
+                            break;
+                        }
+                        if (!(tile.getPiece().getClass() == classes[i] || tile.getPiece().getClass() == Queen.class)) {
+                            continue;
+                        }
+                        checkingIndexes.add(move);
+                    }
+                }
+            }
+
+        }
+        // look for pawn checks
+        {
+            int[][][] moveArrayArray = new int[][][]{{{2}, {10}}, {{4}, {8}}};
+            int[][] moveArray = moveArrayArray[1 - whiteTurn];
             ArrayList<Integer> Return = Piece.generateMovesFromArray(moveArray, rank, file, true, false);
             ArrayList<ArrayList<Integer>> possibleChecks = new ArrayList<>();
             int index = -1;
@@ -333,12 +368,13 @@ public class Board extends JPanel implements IHashMaps {
                     if (tile.getPiece().isWhite() == whiteTurn) {
                         break;
                     }
-                    if (!(tile.getPiece().getClass() == classes[i] || tile.getPiece().getClass() == Queen.class)) {
+                    if (tile.getPiece().getClass() != Pawn.class) {
                         continue;
                     }
                     checkingIndexes.add(move);
                 }
             }
+
         }
 
         return checkingIndexes;
@@ -379,11 +415,17 @@ public class Board extends JPanel implements IHashMaps {
         Piece orig = testboard.get(origin).getPiece();
         int origRank = orig.getRank();
         String origFile = orig.getFile();
-
         testboard.get(origin).setPiece(new Empty(origRank, origFile));
         orig.setFile(destFile);
         orig.setRank(destRank);
         testboard.get(destination).setPiece(orig);
+        if(destination == enPassant){
+            if(orig.isWhite() == 1){
+                testboard.get(destination + 11).setPiece(new Empty(destRank - 1, destFile));
+            } else {
+                testboard.get(destination - 11).setPiece(new Empty(destRank + 1, destFile));
+            }
+        }
         ArrayList<Integer> checks = Board.findChecks(testboard);
         return (checks.size() == 0);
     }

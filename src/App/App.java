@@ -12,7 +12,7 @@ public class App extends JFrame {
         super.setVisible(true);
         super.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         super.add(new Board("b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1", 1, -1));
-        //super.add(new Board("b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2r212P2/1PRNQBKNRP1", 1, -1));
+        //super.add(new Board("k/3/5/7/ppppppppp/5P4r/4K6/11/10b/317/11", 0, -1));
         //super.add(new Board("k/3/5/7/9/2N8/3N2r1n2/10N/6Q4/11/6K4", 1, -1));
     }
 }

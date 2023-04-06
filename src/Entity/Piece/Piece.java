@@ -90,10 +90,6 @@ public abstract class Piece extends Entity {
                     break;
                 }
                 if(validate) {
-                    if(Board.enPassant == pos){
-                        moves.add(pos);
-                        break;
-                    }
                     if (Board.board.get(pos).getPiece().isWhite() == Board.board.get(startpos).getPiece().isWhite()) {
                         break;
                     }
