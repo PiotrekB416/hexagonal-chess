@@ -11,6 +11,7 @@ import java.util.*;
 
 public class Board extends JPanel implements IHashMaps {
     public static ArrayList<Tile> board;
+    private static int promotion;
     public static int whiteTurn;
     public static int enPassant;
     private static double scale;
@@ -90,6 +91,7 @@ public class Board extends JPanel implements IHashMaps {
     public Board(String position, int whiteTurn, int enPassant){
         this.position = position;
         Board.scale = 1;
+        Board.promotion = -1;
         this.setPosition(position, whiteTurn, enPassant);
         addMouseListener(new MouseAdapter() {
 
@@ -97,6 +99,30 @@ public class Board extends JPanel implements IHashMaps {
             public void mouseClicked(MouseEvent e) {
                 int startheight = -300;
                 int clickedTile = -1;
+                if (Board.promotion != -1){
+                    int[][] offsets = new int[][] {
+                            {(int) (((57.74 + 28.88) * 5 - 5) * Board.scale) + 43, (int) ((450) * Board.scale) + 47}, {(int) (((57.74 + 28.88) * 5 - 5) * Board.scale) + 43*2 + 80, (int) ((450) * Board.scale) + 47},
+                            {(int) (((57.74 + 28.88) * 5 - 5) * Board.scale) + 43, (int) ((450) * Board.scale) + 47*2 + 80}, {(int) (((57.74 + 28.88) * 5 - 5) * Board.scale) + 43*2 + 80, (int) ((450) * Board.scale) + 47*2 + 80}
+                    };
+                    int length = (int) (80 * Board.scale);
+                    for(int i = 0; i < 4; i++){
+                        int[] offset = offsets[i];
+                        if (e.getX() > offset[0] && e.getX() < (offset[0] + length) && e.getY() > offset[1] && e.getY() < offset[1] + length){
+                            Piece piececlone = Board.board.get(Board.promotion).getPiece();
+                            switch (i) {
+                                case 0 -> Board.board.get(Board.promotion).setPiece(new Queen(piececlone.getRank(), piececlone.getFile(), piececlone.isWhite()));
+                                case 1 -> Board.board.get(Board.promotion).setPiece(new Rook(piececlone.getRank(), piececlone.getFile(), piececlone.isWhite()));
+                                case 2 -> Board.board.get(Board.promotion).setPiece(new Bishop(piececlone.getRank(), piececlone.getFile(), piececlone.isWhite()));
+                                case 3 -> Board.board.get(Board.promotion).setPiece(new Knight(piececlone.getRank(), piececlone.getFile(), piececlone.isWhite()));
+                            }
+                            break;
+                        }
+                    }
+
+                    Board.promotion = -1;
+                    repaint();
+                    return;
+                }
                 for (int i = 0; i < 121; i++) {
                     Tile tile = board.get(i);
                     if(tile == null){
@@ -108,31 +134,32 @@ public class Board extends JPanel implements IHashMaps {
                     int starty = (int) ((startheight + (100 * (12 - tile.getRank())) + offset + 10) * Board.scale);
                     int length = (int) (80 * Board.scale);
 
-                    if (e.getX() > startx && e.getX() < startx + length &&
+                    if (!(e.getX() > startx && e.getX() < startx + length &&
                         e.getY() > starty && e.getY() < starty + length
-                    ){
-                        if (Board.clickedIndex == i){
-                            Board.moves = new ArrayList<>();
-                            for (int j = 0; j < 121; j++) {
-                                Tile tile2 = board.get(j);
-                                if(tile2 == null){
-                                    continue;
-                                }
-                                tile2.setMoveIndicator(false);
+                    )){continue;}
+
+                    if (Board.clickedIndex == i){
+                        Board.moves = new ArrayList<>();
+                        for (int j = 0; j < 121; j++) {
+                            Tile tile2 = board.get(j);
+                            if(tile2 == null){
+                                continue;
                             }
-                            Board.clickedIndex = -1;
-                            repaint();
-                            break;
+                            tile2.setMoveIndicator(false);
+                            tile2.setMoveIndicator(false, 1);
                         }
-
-                        if(Board.clickedIndex > 0 & Board.board.get(i).getPiece().isWhite() != Board.whiteTurn){
-                            clickedTile = Board.clickedIndex;
-                        }
-                        Board.clickedIndex = i;
-
+                        Board.clickedIndex = -1;
+                        repaint();
                         break;
-
                     }
+
+                    if(Board.clickedIndex > 0 & Board.board.get(i).getPiece().isWhite() != Board.whiteTurn){
+                        clickedTile = Board.clickedIndex;
+                    }
+                    Board.clickedIndex = i;
+
+                    break;
+
                 }
                 if(Board.clickedIndex < 0){
                     return;
@@ -150,6 +177,7 @@ public class Board extends JPanel implements IHashMaps {
                                 continue;
                             }
                             tile2.setMoveIndicator(false);
+                            tile2.setMoveIndicator(false, 1);
                         }
                         Board.clickedIndex = -1;
                         //Board.whiteTurn = !Board.whiteTurn;
@@ -164,6 +192,7 @@ public class Board extends JPanel implements IHashMaps {
                             continue;
                         }
                         tile.setMoveIndicator(false);
+                        tile.setMoveIndicator(false, 1);
                     }
                     repaint();
                     return;
@@ -175,9 +204,19 @@ public class Board extends JPanel implements IHashMaps {
                         continue;
                     }
                     tile.setMoveIndicator(false);
+                    tile.setMoveIndicator(false, 1);
                 }
                 //System.out.println(board.get(Board.clickedIndex));
+
                 Board.moves = board.get(Board.clickedIndex).getPiece().getPossibleMoves();
+                if (Board.moves.size() == 0 && board.get(Board.clickedIndex).getPiece().getClass() == King.class){
+                    if(findChecks(Board.board).size() != 0) {
+                        System.out.println("mate");
+                    } else {
+                        System.out.println("stalemate");
+                    }
+                }
+                board.get(Board.clickedIndex).setMoveIndicator(true, 1);
                 for(int index: Board.moves){
                     Tile tile = board.get(index);
 
@@ -194,6 +233,7 @@ public class Board extends JPanel implements IHashMaps {
 
     @Override
     protected void paintComponent(Graphics g) {
+
         setBackground(Color.BLACK);
         int startheight = -300;
         super.paintComponent(g);
@@ -216,6 +256,27 @@ public class Board extends JPanel implements IHashMaps {
 
             //g.drawImage(hex, 100, 100,   this);
         }
+        if(Board.promotion != -1){
+            int offset = Board.offset.get("e") * 50;
+            g.setColor(Color.RED);
+            g.drawRect((int) (((57.74 + 28.88) * 5 - 5) * Board.scale) - 1, (int) ((450) * Board.scale) - 1, 290, 302);
+            g.setColor(Color.GRAY);
+            g.fillRect((int) (((57.74 + 28.88) * 5 - 5) * Board.scale), (int) ((450) * Board.scale), 288, 300);
+            g.setColor(Color.GRAY);
+            int color = Board.promotion > 70 ? 0 : 1;
+
+
+            Piece[] pieces = new Piece[]{new Queen(-1, "0", color), new Rook(-1, "0", color), new Bishop(-1, "0", color), new Knight(-1, "0", color)};
+
+            Image[] images = new Image[]{pieces[0].getTexture(), pieces[1].getTexture(), pieces[2].getTexture(), pieces[3].getTexture()};
+            int[][] offsets = new int[][] {
+                    {(int) (((57.74 + 28.88) * 5 - 5) * Board.scale) + 43, (int) ((450) * Board.scale) + 47}, {(int) (((57.74 + 28.88) * 5 - 5) * Board.scale) + 43*2 + 80, (int) ((450) * Board.scale) + 47},
+                    {(int) (((57.74 + 28.88) * 5 - 5) * Board.scale) + 43, (int) ((450) * Board.scale) + 47*2 + 80}, {(int) (((57.74 + 28.88) * 5 - 5) * Board.scale) + 43*2 + 80, (int) ((450) * Board.scale) + 47*2 + 80}
+            };
+            for(int i = 0; i < images.length; i++){
+                g.drawImage(images[i], offsets[i][0], offsets[i][1], (int) (80 * Board.scale), (int) (80 * Board.scale), this);
+            }
+        }
 
     }
 
@@ -231,31 +292,33 @@ public class Board extends JPanel implements IHashMaps {
         if(destination == Board.enPassant){
             board.get(destination + ((orig.isWhite() == 1) ? 11 : -11)).setPiece(new Empty(destRank + ((orig.isWhite() == 1) ? 1 : -1), destFile));
         }
+        if(orig.getClass() == Pawn.class && ((dest.getRank() == 1 && orig.isWhite() == 0) || ((
+                dest.getRank() == 6 && (dest.getFile().equals("a") || dest.getFile().equals("l")) ||
+                dest.getRank() == 7 && (dest.getFile().equals("b") || dest.getFile().equals("k")) ||
+                dest.getRank() == 8 && (dest.getFile().equals("c") || dest.getFile().equals("i")) ||
+                dest.getRank() == 9 && (dest.getFile().equals("d") || dest.getFile().equals("h")) ||
+                dest.getRank() == 10 && (dest.getFile().equals("e") || dest.getFile().equals("g")) ||
+                dest.getRank() == 11 && dest.getFile().equals("f")) && orig.isWhite() == 1))){
+            Board.promotion = destination;
+        }
 
         board.get(origin).setPiece(new Empty(origRank, origFile));
         orig.setFile(destFile);
         orig.setRank(destRank);
         board.get(destination).setPiece(orig);
-        if(orig.getClass() == Pawn.class){
+        if(orig.getClass() == Pawn.class && Math.abs(origin - destination) == 22){
             //System.out.println(Math.abs(origin - destination));
-            if (Math.abs(origin - destination) == 22){
-                Board.enPassant = origin + 11;
-                if (orig.isWhite() == 1){
-                    Board.enPassant = origin - 11;
-                }
-            } else {
-                Board.enPassant = -1;
+            Board.enPassant = origin + 11;
+            if (orig.isWhite() == 1){
+                Board.enPassant = origin - 11;
             }
         } else {
             Board.enPassant = -1;
         }
         Board.whiteTurn = 1 - Board.whiteTurn;
     }
-    private static ArrayList<Integer> findChecks(ArrayList<Tile> board){
-        return findChecks(board, -1);
-    }
 
-    private static ArrayList<Integer> findChecks(ArrayList<Tile> board, int ignore){
+    private static ArrayList<Integer> findChecks(ArrayList<Tile> board){
 
         ArrayList<Integer> checkingIndexes = new ArrayList<>();
         int kingPosition = -1;
@@ -277,7 +340,10 @@ public class Board extends JPanel implements IHashMaps {
         {
             int[][] moveArray = {{1, 0}, {1, 2}, {3, 2}, {3, 4}, {5, 4}, {5, 6}, {7, 6}, {7, 8}, {9, 8}, {9, 10}, {11, 10}, {11, 0}};
             ArrayList<Integer> possibleKnightChecks = Piece.generateMovesFromArray(moveArray, rank, file, false, false);
+
             for(int move : possibleKnightChecks){
+
+
                 if(move < 0){
                     continue;
                 }
@@ -319,11 +385,18 @@ public class Board extends JPanel implements IHashMaps {
                     possibleChecks.get(index).add(move);
 
                 }
+
                 for (ArrayList<Integer> line : possibleChecks) {
+
                     for (int move : line) {
-                        if (move == ignore) {
+                        if(board.get(move) == null || move < 0){
                             continue;
                         }
+
+
+//                        if (move == ignore) {
+//                            continue;
+//                        }
                         Tile tile = board.get(move);
                         if (tile == null) {
                             continue;
@@ -357,10 +430,14 @@ public class Board extends JPanel implements IHashMaps {
 
             }
             for (ArrayList<Integer> line : possibleChecks) {
+
                 for (int move : line) {
-                    if (move == ignore) {
+                    if(board.get(move) == null || move < 0){
                         continue;
                     }
+//                    if (move == ignore) {
+//                        continue;
+//                    }
                     Tile tile = board.get(move);
                     if (tile == null) {
                         continue;
@@ -376,7 +453,6 @@ public class Board extends JPanel implements IHashMaps {
             }
 
         }
-
         return checkingIndexes;
     }
 

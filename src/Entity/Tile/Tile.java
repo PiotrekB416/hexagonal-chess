@@ -1,5 +1,6 @@
 package Entity.Tile;
 
+import App.IHashMaps;
 import Entity.Entity;
 import Entity.Piece.Piece;
 
@@ -10,14 +11,7 @@ import java.awt.event.MouseListener;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class Tile extends Entity {
-    private HashMap<String, Integer> revdict = new HashMap(){
-        {
-            put("a", 1); put("b", 2); put("c", 3); put("d", 4); put("e", 5); put("f", 6);
-            put("g", 7); put("h", 8); put("i", 9); put("k", 10); put("l", 11);
-        }
-    };
-
+public class Tile extends Entity implements IHashMaps {
     public Piece getPiece() {
         return piece;
     }
@@ -34,10 +28,12 @@ public class Tile extends Entity {
     public Tile(int rank, String file, Piece piece) {
         super(rank, file);
         this.piece = piece;
-        this.moveIndicator = false;
+        this.moveIndicator = new boolean[]{false, false};
     }
     public Image getTexture() {
-
+        if(moveIndicator[1]){
+            return new ImageIcon("src/Images/selected.png").getImage();
+        }
         int color = this.rank % 3;
         if (this.revdict.get(this.file) % 3 == 1) {
             color += 2;
@@ -66,17 +62,19 @@ public class Tile extends Entity {
     }
 
     public boolean isMoveIndicator() {
-        return moveIndicator;
+        return moveIndicator[0];
     }
-
     public void setMoveIndicator(boolean moveIndicator) {
-        this.moveIndicator = moveIndicator;
+        this.moveIndicator[0] = moveIndicator;
+    }
+    public void setMoveIndicator(boolean moveIndicator, int index) {
+        this.moveIndicator[index] = moveIndicator;
     }
 
-    private boolean moveIndicator;
+    private boolean[] moveIndicator;
 
     public Image getMoveIndicatorTexture(){
-        if (this.moveIndicator){
+        if (this.moveIndicator[0]){
             return new ImageIcon("src/Images/dot.png").getImage();
         }
         return new ImageIcon("src/Images/Empty.png").getImage();
