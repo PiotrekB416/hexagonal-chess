@@ -16,7 +16,11 @@ public class Board extends JPanel implements IHashMaps, IValidate {
     private int promotion;
     public int whiteTurn;
     public int enPassant;
-    private final double scale;
+    private double scale;
+    private JFrame window;
+    public void setScale(double scale){
+        this.scale = scale;
+    }
     public Board getSelf(){
         return this;
     }
@@ -91,10 +95,11 @@ public class Board extends JPanel implements IHashMaps, IValidate {
 
     private String position;
 
-    public Board(String position, int whiteTurn, int enPassant){
+    public Board(String position, int whiteTurn, int enPassant, JFrame window){
         this.position = position;
         this.scale = 1;
         this.promotion = -1;
+        this.window = window;
 
         this.setPosition(position, whiteTurn, enPassant);
         addMouseListener(new MouseAdapter() {
@@ -238,6 +243,12 @@ public class Board extends JPanel implements IHashMaps, IValidate {
     @Override
     protected void paintComponent(Graphics g) {
 
+        if ((this.window.getSize().getWidth() / this.window.getSize().getHeight()) < (1150.0 / 1200.0)){
+            this.scale = this.window.getSize().getWidth() / 1150.0;
+        } else {
+            this.scale = this.window.getSize().getHeight() / 1200.0;
+        }
+
         setBackground(Color.BLACK);
         int startheight = -300;
         super.paintComponent(g);
@@ -301,7 +312,6 @@ public class Board extends JPanel implements IHashMaps, IValidate {
             this.enPassant = -1;
         }
         this.whiteTurn = 1 - this.whiteTurn;
-        System.out.print(this.whiteTurn);
     }
 
     private void promotePiece(Graphics g, Board b){
