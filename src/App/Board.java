@@ -92,7 +92,7 @@ public class Board extends JPanel implements IHashMaps {
 
     public Board(String position, boolean whiteTurn, int enPassant){
         this.position = position;
-        Board.scale = 1;
+        Board.scale = .7;
         this.setPosition(position, whiteTurn, enPassant);
         addMouseListener(new MouseAdapter() {
 
@@ -206,7 +206,7 @@ public class Board extends JPanel implements IHashMaps {
 
 
         for (Tile tile : board) {
-            if(tile == null){
+            if (tile == null) {
                 continue;
             }
             int offset = Board.offset.get(tile.getFile()) * 50;
