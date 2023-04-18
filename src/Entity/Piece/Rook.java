@@ -1,5 +1,7 @@
 package Entity.Piece;
 
+import App.Board;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -15,11 +17,11 @@ public class Rook extends Piece {
     }
 
     @Override
-    public ArrayList<Integer> getPossibleMoves(){
-        return getMoves();
+    public ArrayList<Integer> getPossibleMoves(Board board){
+        return getMoves(board);
     }
 
-    private ArrayList<Integer> getMoves(){
+    private ArrayList<Integer> getMoves(Board board){
 
         ArrayList<Integer> ret = new ArrayList();
         //int file = this.revdict.get(this.file);
@@ -27,7 +29,7 @@ public class Rook extends Piece {
                 {0}, {2}, {4}, {6}, {8}, {10}
         };
 
-        return generateMovesFromArray(moveArray, this.rank, this.file, true, true);
+        return generateMovesFromArray(board, moveArray, this.rank, this.file, true, true);
     }
 
     @Override

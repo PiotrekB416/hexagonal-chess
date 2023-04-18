@@ -1,15 +1,11 @@
 package Entity.Tile;
 
-import App.IHashMaps;
+import Interfaces.IHashMaps;
 import Entity.Entity;
 import Entity.Piece.Piece;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.HashMap;
-import java.util.UUID;
 
 public class Tile extends Entity implements IHashMaps {
     public Piece getPiece() {

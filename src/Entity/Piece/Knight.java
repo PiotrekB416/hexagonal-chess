@@ -1,5 +1,7 @@
 package Entity.Piece;
 
+import App.Board;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -10,13 +12,13 @@ public class Knight extends Piece{
         super(rank, file);
         this.white = white;
     }
-    public ArrayList<Integer> getPossibleMoves(){
-        return getMoves();
+    public ArrayList<Integer> getPossibleMoves(Board board){
+        return getMoves(board);
     }
-    private ArrayList<Integer> getMoves(){
+    private ArrayList<Integer> getMoves(Board board){
         // {rank, file}
         int[][] moveArray = {{1, 0}, {1, 2}, {3, 2}, {3, 4}, {5, 4}, {5, 6}, {7, 6}, {7, 8}, {9, 8}, {9, 10}, {11, 10}, {11, 0}};
-        return generateMovesFromArray(moveArray, this.rank, this.file, false, true);
+        return generateMovesFromArray(board, moveArray, this.rank, this.file, false, true);
     }
 
     @Override

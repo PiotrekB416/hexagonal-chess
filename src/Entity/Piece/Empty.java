@@ -1,5 +1,6 @@
 package Entity.Piece;
 
+import App.Board;
 import Entity.Entity;
 
 import java.awt.event.MouseEvent;
@@ -13,8 +14,8 @@ public class Empty extends Piece {
     }
 
     @Override
-    public ArrayList<Integer> getPossibleMoves(){
-        return super.getPossibleMoves();
+    public ArrayList<Integer> getPossibleMoves(Board board){
+        return super.getPossibleMoves(board);
     }
 
 }

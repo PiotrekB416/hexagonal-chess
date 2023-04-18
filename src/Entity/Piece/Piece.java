@@ -2,6 +2,7 @@ package Entity.Piece;
 
 import App.Board;
 import Entity.Entity;
+import Interfaces.IValidate;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,7 +10,7 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public abstract class Piece extends Entity {
+public abstract class Piece extends Entity implements IValidate {
     public Piece(int rank, String file){
         super(rank, file);
     }
@@ -55,7 +56,7 @@ public abstract class Piece extends Entity {
         }
         return neighboringMap;
     }
-    public static ArrayList<Integer> generateMovesFromArray(int[][] moveArray, int rank, String file, boolean rep, boolean validate){
+    public static ArrayList<Integer> generateMovesFromArray(Board board, int[][] moveArray, int rank, String file, boolean rep, boolean validate){
         ArrayList<Integer> moves = new ArrayList<>();
         for (int[] i : moveArray){
             if(!validate){
@@ -86,35 +87,35 @@ public abstract class Piece extends Entity {
                 testpos = new int[]{f, r};
                 int pos = (11 - r) * 11 + f - 1;
                 //System.out.println(pos);
-                if(Board.board.get(pos) == null){
+                if(board.board.get(pos) == null){
                     break;
                 }
                 if(validate) {
-                    if (Board.board.get(pos).getPiece().isWhite() == Board.board.get(startpos).getPiece().isWhite()) {
+                    if (board.board.get(pos).getPiece().isWhite() == board.board.get(startpos).getPiece().isWhite()) {
                         break;
                     }
 
-                    if(!Board.validateMove(startpos, pos)){
+                    if(!IValidate.validateMove(startpos, pos, board)){
                         continue;
                     }
-                    if (Board.board.get(startpos).getPiece().getClass() == Pawn.class) {
+                    if (board.board.get(startpos).getPiece().getClass() == Pawn.class) {
                         if (revdict.get(file) - f != 0) {
-                            if (pos == Board.enPassant) {
+                            if (pos == board.enPassant) {
                                 moves.add(pos);
                                 continue;
                             }
-                            if (Board.board.get(pos).getPiece().getClass() != Empty.class & Board.board.get(pos).getPiece().isWhite() != Board.board.get(startpos).getPiece().isWhite()) {
+                            if (board.board.get(pos).getPiece().getClass() != Empty.class & board.board.get(pos).getPiece().isWhite() != board.board.get(startpos).getPiece().isWhite()) {
                                 moves.add(pos);
                                 continue;
                             }
                             continue;
                         } else {
-                            if (Board.board.get(pos).getPiece().getClass() != Empty.class) {
+                            if (board.board.get(pos).getPiece().getClass() != Empty.class) {
                                 continue;
                             }
                         }
                     }
-                    if (Board.board.get(pos).getPiece().getClass() == Empty.class) {
+                    if (board.board.get(pos).getPiece().getClass() == Empty.class) {
                         moves.add(pos);
                         continue;
                     }
@@ -131,7 +132,7 @@ public abstract class Piece extends Entity {
         return moves;
     }
 
-    public ArrayList<Integer> getPossibleMoves(){
+    public ArrayList<Integer> getPossibleMoves(Board board){
         return new ArrayList();
     }
 

@@ -1,5 +1,6 @@
 package Entity.Piece;
 
+import App.Board;
 import Entity.Entity;
 
 import javax.imageio.ImageIO;
@@ -23,14 +24,14 @@ public class Pawn extends Piece {
 
 
     @Override
-    public ArrayList<Integer> getPossibleMoves(){
+    public ArrayList<Integer> getPossibleMoves(Board board){
         if (this.white == 1){
-            return this.getWhiteMoves();
+            return this.getWhiteMoves(board);
         }
-        return getBlackMoves();
+        return getBlackMoves(board);
     }
 
-    private ArrayList<Integer> getWhiteMoves(){
+    private ArrayList<Integer> getWhiteMoves(Board board){
         ArrayList<Integer> ret = new ArrayList();
         int[] orgpos = new int[]{
                 0, 0, 1, 2, 3, 4, 5, 4, 3, 2, 1
@@ -46,9 +47,9 @@ public class Pawn extends Piece {
                     {0, 0}, {0}, {2}, {10}
             };
         }
-        return generateMovesFromArray(moveArray, this.rank, this.file, false, true);
+        return generateMovesFromArray(board, moveArray, this.rank, this.file, false, true);
     }
-    private ArrayList<Integer> getBlackMoves(){
+    private ArrayList<Integer> getBlackMoves(Board board){
         ArrayList<Integer> ret = new ArrayList();
 
         int file = this.revdict.get(this.file);
@@ -62,7 +63,7 @@ public class Pawn extends Piece {
                     {6, 6}, {6}, {4}, {8}
             };
         }
-        return generateMovesFromArray(moveArray, this.rank, this.file, false, true);
+        return generateMovesFromArray(board, moveArray, this.rank, this.file, false, true);
 
 
     }

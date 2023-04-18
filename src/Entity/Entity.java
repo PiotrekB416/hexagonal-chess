@@ -1,6 +1,6 @@
 package Entity;
 
-import App.IHashMaps;
+import Interfaces.IHashMaps;
 
 abstract public class Entity implements IHashMaps {
 

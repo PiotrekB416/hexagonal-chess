@@ -1,5 +1,7 @@
 package Entity.Piece;
 
+import App.Board;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -12,11 +14,11 @@ public class King extends Piece {
     }
 
     @Override
-    public ArrayList<Integer> getPossibleMoves(){
-        return getMoves();
+    public ArrayList<Integer> getPossibleMoves(Board board){
+        return getMoves(board);
     }
 
-    private ArrayList<Integer> getMoves(){
+    private ArrayList<Integer> getMoves(Board board){
 
         ArrayList<Integer> ret = new ArrayList();
         //int file = this.revdict.get(this.file);
@@ -24,7 +26,7 @@ public class King extends Piece {
                 {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}
         };
 
-        return generateMovesFromArray(moveArray, this.rank, this.file, false, true);
+        return generateMovesFromArray(board, moveArray, this.rank, this.file, false, true);
     }
 
     @Override
