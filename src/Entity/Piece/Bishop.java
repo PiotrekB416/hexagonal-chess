@@ -1,6 +1,7 @@
 package Entity.Piece;
 
 import App.Board;
+import Interfaces.IMoves;
 
 import javax.swing.*;
 import java.awt.*;

@@ -219,7 +219,7 @@ public class Board extends JPanel implements IHashMaps, IValidate {
 
                 moves = board.get(clickedIndex).getPiece().getPossibleMoves(getSelf());
                 if (Board.moves.size() == 0 && board.get(clickedIndex).getPiece().getClass() == King.class){
-                    if(IValidate.findChecks(board, getSelf()).size() != 0) {
+                    if(findChecks(board, getSelf()).size() != 0) {
                         System.out.println("mate");
                     } else {
                         System.out.println("stalemate");
@@ -285,7 +285,7 @@ public class Board extends JPanel implements IHashMaps, IValidate {
         int origRank = orig.getRank();
         String origFile = orig.getFile();
 
-        if(destination == this.enPassant){
+        if(destination == this.enPassant && orig.getClass() == Pawn.class){
             this.board.get(destination + ((orig.isWhite() == 1) ? 11 : -11)).setPiece(new Empty(destRank + ((orig.isWhite() == 1) ? 1 : -1), destFile));
         }
         if(orig.getClass() == Pawn.class && ((dest.getRank() == 1 && orig.isWhite() == 0) || ((

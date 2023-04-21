@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import static App.Board.*;
 
 public interface IValidate {
-    static boolean validateMove(int origin, int destination, Board board){
+     default boolean validateMove(int origin, int destination, Board board){
         ArrayList<Tile> testboard = new ArrayList<>();
         for(Tile tile : board.board){
             if(tile == null){
@@ -59,7 +59,7 @@ public interface IValidate {
         return (checks.size() == 0);
     }
 
-    static ArrayList<Integer> findChecks(ArrayList<Tile> board, Board parent){
+    default ArrayList<Integer> findChecks(ArrayList<Tile> board, Board parent){
 
         ArrayList<Integer> checkingIndexes = new ArrayList<>();
         int kingPosition = -1;
@@ -78,9 +78,10 @@ public interface IValidate {
         int rank = board.get(kingPosition).getRank();
         String file = board.get(kingPosition).getFile();
         // look for knight checks
+        Piece piece = new Piece(-1, "");
         {
             int[][] moveArray = {{1, 0}, {1, 2}, {3, 2}, {3, 4}, {5, 4}, {5, 6}, {7, 6}, {7, 8}, {9, 8}, {9, 10}, {11, 10}, {11, 0}};
-            ArrayList<Integer> possibleKnightChecks = Piece.generateMovesFromArray(parent, moveArray, rank, file, false, false);
+            ArrayList<Integer> possibleKnightChecks = piece.generateMovesFromArray(parent, moveArray, rank, file, false, false);
 
             for(int move : possibleKnightChecks){
 
@@ -114,7 +115,7 @@ public interface IValidate {
 
             for (int i = 0; i < 2; i++) {
                 int[][] moveArray = moveArrayArray[i];
-                ArrayList<Integer> Return = Piece.generateMovesFromArray(parent, moveArray, rank, file, true, false);
+                ArrayList<Integer> Return = piece.generateMovesFromArray(parent, moveArray, rank, file, true, false);
                 ArrayList<ArrayList<Integer>> possibleChecks = new ArrayList<>();
                 int index = -1;
                 for (int move : Return) {
@@ -158,7 +159,7 @@ public interface IValidate {
         {
             int[][][] moveArrayArray = new int[][][]{{{2}, {10}}, {{4}, {8}}};
             int[][] moveArray = moveArrayArray[1 - parent.whiteTurn];
-            ArrayList<Integer> Return = Piece.generateMovesFromArray(parent, moveArray, rank, file, true, false);
+            ArrayList<Integer> Return = piece.generateMovesFromArray(parent, moveArray, rank, file, true, false);
             ArrayList<ArrayList<Integer>> possibleChecks = new ArrayList<>();
             int index = -1;
             for (int move : Return) {

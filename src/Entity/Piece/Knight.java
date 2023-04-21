@@ -1,12 +1,13 @@
 package Entity.Piece;
 
 import App.Board;
+import Interfaces.IMoves;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class Knight extends Piece{
+public class Knight extends Piece {
     private int white;
     public Knight(int rank, String file, int white){
         super(rank, file);

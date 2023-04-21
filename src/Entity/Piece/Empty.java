@@ -2,6 +2,7 @@ package Entity.Piece;
 
 import App.Board;
 import Entity.Entity;
+import Interfaces.IMoves;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;

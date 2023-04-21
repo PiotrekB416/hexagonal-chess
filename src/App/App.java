@@ -26,7 +26,7 @@ public class App extends JFrame {
         super.setLocationRelativeTo(null);
         super.setVisible(true);
         super.add(new Board("b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1", 1, -1, this));
-
+        //super.add(new Board("", 1, -1, this))
         super.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
     }
