@@ -273,10 +273,10 @@ public class Board extends JPanel implements IHashMaps, IValidate {
             promotePiece(g, this);
         }
         if (getMovesByPlayer(whiteTurn).size() == 0) {
-            JLabel wintext = new JLabel("Ktoś wygrał!");
-            wintext.setFont(new Font("Sans", Font.PLAIN, 40));
-            JFrame end = new App();
-
+//            JLabel wintext = new JLabel("Ktoś wygrał!");
+//            wintext.setFont(new Font("Sans", Font.PLAIN, 40));
+            window.dispose();
+            new App(1, 1 - whiteTurn, findChecks(board, this).size() > 0);
         }
     }
 
@@ -349,7 +349,7 @@ public class Board extends JPanel implements IHashMaps, IValidate {
             Piece piece = tile.getPiece();
             if (piece == null) {continue;}
             if (tile.getPiece().isWhite() == isWhite) {
-                availableMoves.addAll(piece.getPossibleMoves(this.getSelf()));
+                availableMoves.addAll(piece.getPossibleMoves(this));
             }
         }
 
