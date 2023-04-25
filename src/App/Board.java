@@ -17,11 +17,11 @@ public class Board extends JPanel implements IHashMaps, IValidate {
     public int whiteTurn;
     public int enPassant;
     private double scale;
-    private JFrame window;
+    private final JFrame window;
     public void setScale(double scale){
         this.scale = scale;
     }
-    public Board getSelf(){
+    private Board getSelf(){
         return this;
     }
     private int clickedIndex = -1;

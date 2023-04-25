@@ -7,7 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class StartScreen extends JPanel {
-    public StartScreen(){
+    public StartScreen(JFrame sup){
         setBackground(Color.BLACK);
         JLabel title = new JLabel("Szachy hexagonalne");
         title.setFont(new Font("Sans", Font.BOLD, 80));
@@ -22,6 +22,7 @@ public class StartScreen extends JPanel {
         starto.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                sup.dispose();
                 new App(true);
             }
         });

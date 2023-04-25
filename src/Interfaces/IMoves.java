@@ -126,6 +126,6 @@ public interface IMoves extends IValidate, IHashMaps {
     }
 
     default ArrayList<Integer> getPossibleMoves(Board board){
-        return new ArrayList();
+        return null;
     }
 }
