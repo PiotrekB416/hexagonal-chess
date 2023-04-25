@@ -100,7 +100,6 @@ public class Board extends JPanel implements IHashMaps, IValidate {
         this.scale = 1;
         this.promotion = -1;
         this.window = window;
-
         this.setPosition(position, whiteTurn, enPassant);
         addMouseListener(new MouseAdapter() {
 
@@ -255,7 +254,7 @@ public class Board extends JPanel implements IHashMaps, IValidate {
 
 
         for (Tile tile : board) {
-            if(tile == null){
+            if (tile == null) {
                 continue;
             }
             int offset = this.offset.get(tile.getFile()) * 50;
@@ -273,7 +272,12 @@ public class Board extends JPanel implements IHashMaps, IValidate {
         if(this.promotion != -1){
             promotePiece(g, this);
         }
+        if (getMovesByPlayer(whiteTurn).size() == 0) {
+            JLabel wintext = new JLabel("Ktoś wygrał!");
+            wintext.setFont(new Font("Sans", Font.PLAIN, 40));
+            JFrame end = new App();
 
+        }
     }
 
     private void movePiece(int origin, int destination){
@@ -335,4 +339,21 @@ public class Board extends JPanel implements IHashMaps, IValidate {
             g.drawImage(images[i], offsets[i][0], offsets[i][1], (int) (80 * this.scale), (int) (80 * this.scale), b);
         }
     }
+    public ArrayList<Integer> getMovesByPlayer(int isWhite) {
+        ArrayList<Integer> availableMoves = new ArrayList<>();
+        for (int i =0; i < 121; i++){
+            if (this.board.get(i) == null) {
+                continue;
+            }
+            Tile tile = this.board.get(i);
+            Piece piece = tile.getPiece();
+            if (piece == null) {continue;}
+            if (tile.getPiece().isWhite() == isWhite) {
+                availableMoves.addAll(piece.getPossibleMoves(this.getSelf()));
+            }
+        }
+
+        return availableMoves;
+    }
 }
+

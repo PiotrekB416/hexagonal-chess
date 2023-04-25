@@ -43,3 +43,4 @@ public class StartScreen extends JPanel {
         add(quit);
     }
 }
+
