@@ -1,3 +1,4 @@
-out/
-.git/
-.idea/
+/.git/
+/.idea/
+/out/
+/.idea/
