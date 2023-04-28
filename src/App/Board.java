@@ -165,7 +165,7 @@ public class Board extends JPanel implements IHashMaps, IValidate {
                         clickedTile = clickedIndex;
                     }
                     clickedIndex = i;
-
+                    repaint();
                     break;
 
                 }
@@ -236,7 +236,7 @@ public class Board extends JPanel implements IHashMaps, IValidate {
             }
 
         });
-
+        repaint();
     }
 
     @Override
