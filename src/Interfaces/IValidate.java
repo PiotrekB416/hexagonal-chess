@@ -155,11 +155,51 @@ public interface IValidate {
             }
 
         }
+
+        {
+            int[][] moveArray = new int[][]{{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {10}, {11}};
+            ArrayList<Integer> Return = piece.generateMovesFromArray(parent, moveArray, rank, file, false, false);
+            ArrayList<ArrayList<Integer>> possibleChecks = new ArrayList<>();
+            int index = -1;
+            for (int move : Return) {
+                if (move < 0) {
+                    index++;
+                    possibleChecks.add(new ArrayList<>());
+                    continue;
+                }
+                possibleChecks.get(index).add(move);
+
+            }
+            for (ArrayList<Integer> line : possibleChecks) {
+
+                for (int move : line) {
+                    if(board.get(move) == null || move < 0){
+                        continue;
+                    }
+//                    if (move == ignore) {
+//                        continue;
+//                    }
+                    Tile tile = board.get(move);
+                    if (tile == null) {
+                        continue;
+                    }
+                    if (tile.getPiece().isWhite() == parent.whiteTurn) {
+                        break;
+                    }
+                    if (tile.getPiece().getClass() != King.class) {
+                        continue;
+                    }
+                    checkingIndexes.add(move);
+                }
+            }
+
+        }
+
         // look for pawn checks
         {
             int[][][] moveArrayArray = new int[][][]{{{2}, {10}}, {{4}, {8}}};
             int[][] moveArray = moveArrayArray[1 - parent.whiteTurn];
-            ArrayList<Integer> Return = piece.generateMovesFromArray(parent, moveArray, rank, file, true, false);
+            ArrayList<Integer> Return = piece.generateMovesFromArray(parent, moveArray, rank, file, false, false);
             ArrayList<ArrayList<Integer>> possibleChecks = new ArrayList<>();
             int index = -1;
             for (int move : Return) {

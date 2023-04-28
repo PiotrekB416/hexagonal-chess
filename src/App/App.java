@@ -12,7 +12,6 @@ public class App extends JFrame {
     public App(){
         super();
         newApp(this, -1);
-
     }
 
     public App(int x){
@@ -36,8 +35,8 @@ public class App extends JFrame {
         sup.setVisible(true);
         //super.add(new Board("b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1", 1, -1, this));
         switch (x) {
-            case -1 -> add(new StartScreen(this));
-            case 0 -> sup.add(new Board("k/3/5/7/9/1Q9/10Q/Q10/11/11/10K", 1, -1, this));
+            case -1 -> {sup.repaint(); add(new StartScreen(this));}
+            case 0 -> {sup.repaint(); sup.add(new Board("k/3/5/7/9/11/11/11/11/11/10K", 1, -1, this)); sup.repaint(); }
             case 1 -> {
                 String message = " wins: ";
                 if (this.color == 1) {
