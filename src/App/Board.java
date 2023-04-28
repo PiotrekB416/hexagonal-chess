@@ -173,7 +173,7 @@ public class Board extends JPanel implements IMoves {
                         clickedTile = clickedIndex;
                     }
                     clickedIndex = i;
-
+                    repaint();
                     break;
 
                 }
@@ -244,7 +244,7 @@ public class Board extends JPanel implements IMoves {
             }
 
         });
-
+        repaint();
     }
 
     @Override
