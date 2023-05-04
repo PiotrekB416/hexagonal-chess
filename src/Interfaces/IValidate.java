@@ -5,13 +5,14 @@ import Entity.Piece.*;
 import Entity.Tile.Tile;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static App.Board.*;
 
 public interface IValidate {
      default boolean validateMove(int origin, int destination, Board board){
         ArrayList<Tile> testboard = new ArrayList<>();
-        for(Tile tile : board.board){
+        for(Tile tile : board.getBoard()){
             if(tile == null){
                 testboard.add(null);
                 continue;
@@ -240,6 +241,42 @@ public interface IValidate {
 
     default int checkDraw(Board board) {
         //returns value of either 0 - no stalemate, 1 - insufficient material, 2 - threefold repetition
+
+        //check material
+        {
+            boolean draw = true;
+            ArrayList<Class> classes = new ArrayList<>();
+            classes.add(King.class);
+            classes.add(Empty.class);
+
+            for (Tile tile : board.getBoard()) {
+
+                if (tile == null || classes.contains(tile.getPiece().getClass())) {
+                    continue;
+                }
+                draw = false;
+            }
+            if (!draw) {
+                return 1;
+            }
+        }
+        //check threefold repetition
+        {
+            boolean draw = true;
+            HashMap<String, Integer> moves = new HashMap<>();
+            for (String board_pos : board.getMoveHistory()) {
+                if (moves.get(board_pos) == null) {
+                    moves.put(board_pos, 0);
+                } else {
+                    int num = moves.get(board_pos) + 1;
+                    if (num == 3) {
+                        return 2;
+                    }
+                    moves.replace(board_pos, num);
+
+                }
+            }
+        }
         return 0;
     }
 }

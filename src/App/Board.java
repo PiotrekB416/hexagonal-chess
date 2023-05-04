@@ -13,7 +13,10 @@ import java.awt.event.MouseEvent;
 import java.util.*;
 
 public class Board extends JPanel implements IMoves {
-    public ArrayList<Tile> board;
+    private ArrayList<Tile> board;
+    public ArrayList<Tile> getBoard() {
+        return this.board;
+    }
     private int promotion;
     public int whiteTurn;
     public int enPassant;
@@ -26,7 +29,11 @@ public class Board extends JPanel implements IMoves {
         return this;
     }
     private int clickedIndex = -1;
-    private ArrayList<int[][]> moveHistory = new ArrayList<>(); // [white, black][origin, destination] -> [[o, d]: w, [o, d]: b]
+    private ArrayList<String> moveHistory = new ArrayList<>();
+    public ArrayList<String> getMoveHistory() {
+        return moveHistory;
+    }
+
     private static ArrayList<Integer> moves = new ArrayList<>();
 
     public void setPosition(String position, int whiteTurn, int enPassant) {
@@ -318,13 +325,44 @@ public class Board extends JPanel implements IMoves {
             this.enPassant = -1;
         }
 
-        if (this.whiteTurn == 1) {
-            this.moveHistory.add(new int[][]{{origin, destination}, {-1, -1}});
-        } else {
-            this.moveHistory.get(this.moveHistory.size() - 1)[1] = new int[] {origin, destination};
-        }
+        this.moveHistory.add(getBoardString());
 
         this.whiteTurn = 1 - this.whiteTurn;
+    }
+
+    private String getBoardString(){
+        StringBuilder ret = new StringBuilder();
+        for (Tile tile : this.board) {
+            if (tile == null) {
+                ret.append("null ");
+                continue;
+            }
+            Piece piece = tile.getPiece();
+            if (piece.getClass() == Empty.class) {
+                ret.append("Empty ");
+                continue;
+            }
+            if (piece.isWhite() == 1) {
+                ret.append("W");
+            } else {
+                ret.append("B");
+            }
+            if (piece.getClass() == Pawn.class) {
+                ret.append("Pawn ");
+            } else if (piece.getClass() == Knight.class) {
+                ret.append("Knight ");
+            } else if (piece.getClass() == Bishop.class) {
+                ret.append("Bishop ");
+            } else if (piece.getClass() == Rook.class) {
+                ret.append("Rook ");
+            } else if (piece.getClass() == Queen.class) {
+                ret.append("Queen ");
+            } else {
+                ret.append("King ");
+            }
+        }
+
+        return ret.toString();
     }
 
     private void promotePiece(Graphics g, Board b){

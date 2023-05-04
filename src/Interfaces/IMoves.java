@@ -82,35 +82,35 @@ public interface IMoves extends IValidate, IHashMaps {
                 testpos = new int[]{f, r};
                 int pos = (11 - r) * 11 + f - 1;
                 //System.out.println(pos);
-                if(board.board.get(pos) == null){
+                if(board.getBoard().get(pos) == null){
                     break;
                 }
                 if(validate) {
-                    if (board.board.get(pos).getPiece().isWhite() == board.board.get(startpos).getPiece().isWhite()) {
+                    if (board.getBoard().get(pos).getPiece().isWhite() == board.getBoard().get(startpos).getPiece().isWhite()) {
                         break;
                     }
 
                     if(!validateMove(startpos, pos, board)){
                         continue;
                     }
-                    if (board.board.get(startpos).getPiece().getClass() == Pawn.class) {
+                    if (board.getBoard().get(startpos).getPiece().getClass() == Pawn.class) {
                         if (revdict.get(file) - f != 0) {
                             if (pos == board.enPassant) {
                                 moves.add(pos);
                                 continue;
                             }
-                            if (board.board.get(pos).getPiece().getClass() != Empty.class & board.board.get(pos).getPiece().isWhite() != board.board.get(startpos).getPiece().isWhite()) {
+                            if (board.getBoard().get(pos).getPiece().getClass() != Empty.class & board.getBoard().get(pos).getPiece().isWhite() != board.getBoard().get(startpos).getPiece().isWhite()) {
                                 moves.add(pos);
                                 continue;
                             }
                             continue;
                         } else {
-                            if (board.board.get(pos).getPiece().getClass() != Empty.class) {
+                            if (board.getBoard().get(pos).getPiece().getClass() != Empty.class) {
                                 continue;
                             }
                         }
                     }
-                    if (board.board.get(pos).getPiece().getClass() == Empty.class) {
+                    if (board.getBoard().get(pos).getPiece().getClass() == Empty.class) {
                         moves.add(pos);
                         continue;
                     }
@@ -133,10 +133,10 @@ public interface IMoves extends IValidate, IHashMaps {
     default ArrayList<Integer> getMovesByPlayer(Board board, int isWhite) {
         ArrayList<Integer> availableMoves = new ArrayList<>();
         for (int i =0; i < 121; i++){
-            if (board.board.get(i) == null) {
+            if (board.getBoard().get(i) == null) {
                 continue;
             }
-            Tile tile = board.board.get(i);
+            Tile tile =board.getBoard().get(i);
             Piece piece = tile.getPiece();
             if (piece == null) {continue;}
             if (tile.getPiece().isWhite() == isWhite) {
