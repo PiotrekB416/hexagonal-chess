@@ -237,4 +237,9 @@ public interface IValidate {
         }
         return checkingIndexes;
     }
+
+    default int checkDraw(Board board) {
+        //returns value of either 0 - no stalemate, 1 - insufficient material, 2 - threefold repetition
+        return 0;
+    }
 }

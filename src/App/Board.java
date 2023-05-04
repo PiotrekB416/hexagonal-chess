@@ -3,6 +3,7 @@ package App;
 import Entity.Piece.*;
 import Entity.Tile.Tile;
 import Interfaces.IHashMaps;
+import Interfaces.IMoves;
 import Interfaces.IValidate;
 
 import javax.swing.*;
@@ -11,7 +12,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.*;
 
-public class Board extends JPanel implements IHashMaps, IValidate {
+public class Board extends JPanel implements IMoves {
     public ArrayList<Tile> board;
     private int promotion;
     public int whiteTurn;
@@ -25,7 +26,7 @@ public class Board extends JPanel implements IHashMaps, IValidate {
         return this;
     }
     private int clickedIndex = -1;
-
+    private ArrayList<int[][]> moveHistory = new ArrayList<>(); // [white, black][origin, destination] -> [[o, d]: w, [o, d]: b]
     private static ArrayList<Integer> moves = new ArrayList<>();
 
     public void setPosition(String position, int whiteTurn, int enPassant) {
@@ -272,7 +273,8 @@ public class Board extends JPanel implements IHashMaps, IValidate {
         if(this.promotion != -1){
             promotePiece(g, this);
         }
-        if (getMovesByPlayer(whiteTurn).size() == 0) {
+        ArrayList<Integer> moves = getMovesByPlayer(this, whiteTurn);
+        if (moves.size() == 0) {
 //            JLabel wintext = new JLabel("Ktoś wygrał!");
 //            wintext.setFont(new Font("Sans", Font.PLAIN, 40));
             window.dispose();
@@ -315,6 +317,13 @@ public class Board extends JPanel implements IHashMaps, IValidate {
         } else {
             this.enPassant = -1;
         }
+
+        if (this.whiteTurn == 1) {
+            this.moveHistory.add(new int[][]{{origin, destination}, {-1, -1}});
+        } else {
+            this.moveHistory.get(this.moveHistory.size() - 1)[1] = new int[] {origin, destination};
+        }
+
         this.whiteTurn = 1 - this.whiteTurn;
     }
 
@@ -338,22 +347,6 @@ public class Board extends JPanel implements IHashMaps, IValidate {
         for(int i = 0; i < images.length; i++){
             g.drawImage(images[i], offsets[i][0], offsets[i][1], (int) (80 * this.scale), (int) (80 * this.scale), b);
         }
-    }
-    public ArrayList<Integer> getMovesByPlayer(int isWhite) {
-        ArrayList<Integer> availableMoves = new ArrayList<>();
-        for (int i =0; i < 121; i++){
-            if (this.board.get(i) == null) {
-                continue;
-            }
-            Tile tile = this.board.get(i);
-            Piece piece = tile.getPiece();
-            if (piece == null) {continue;}
-            if (tile.getPiece().isWhite() == isWhite) {
-                availableMoves.addAll(piece.getPossibleMoves(this));
-            }
-        }
-
-        return availableMoves;
     }
 }
 

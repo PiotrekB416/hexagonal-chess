@@ -3,6 +3,8 @@ package Interfaces;
 import App.Board;
 import Entity.Piece.Empty;
 import Entity.Piece.Pawn;
+import Entity.Piece.Piece;
+import Entity.Tile.Tile;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -127,5 +129,21 @@ public interface IMoves extends IValidate, IHashMaps {
 
     default ArrayList<Integer> getPossibleMoves(Board board){
         return null;
+    }
+    default ArrayList<Integer> getMovesByPlayer(Board board, int isWhite) {
+        ArrayList<Integer> availableMoves = new ArrayList<>();
+        for (int i =0; i < 121; i++){
+            if (board.board.get(i) == null) {
+                continue;
+            }
+            Tile tile = board.board.get(i);
+            Piece piece = tile.getPiece();
+            if (piece == null) {continue;}
+            if (tile.getPiece().isWhite() == isWhite) {
+                availableMoves.addAll(piece.getPossibleMoves(board));
+            }
+        }
+
+        return availableMoves;
     }
 }
