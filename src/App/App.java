@@ -6,7 +6,7 @@ import java.awt.*;
 
 public class App extends JFrame {
 
-    private int color;
+    private int type;
     private boolean ischeck;
 
     public App(){
@@ -19,8 +19,14 @@ public class App extends JFrame {
         newApp(this, x);
     }
 
+    public App(int x, int type) {
+        this.type = type;
+
+        newApp(this, x);
+    }
+
     public App(int x, int color, boolean ischeck) {
-        this.color = color;
+        this.type = color;
         this.ischeck = ischeck;
 
         newApp(this, x);
@@ -39,19 +45,28 @@ public class App extends JFrame {
             case 0 -> {sup.repaint(); sup.add(new Board("k/3/5/7/9/11/5p5/4P6/11/11/10K", 1, -1, this)); sup.repaint(); }
             case 1 -> {
                 String message = " wins: ";
-                if (this.color == 1) {
-                    message = "white" + message;
+                if (this.type == 1) {
+                    message = "White" + message;
                 } else {
-                    message = "black" + message;
+                    message = "Black" + message;
                 }
                 if (this.ischeck){
-                    message += "checkmate";
+                    message += "Checkmate";
                 } else {
-                    message += "stalemate";
+                    message += "Stalemate";
                 }
 
                 add(new EndScreen(this, message));
 
+            }
+            case 2 -> {
+                String message = "Draw: ";
+                if (this.type == 1) {
+                    message += "Insufficient Material";
+                } else if (this.type == 2){
+                    message += "Threefold Repetition";
+                }
+                add(new EndScreen(this, message));
             }
             default -> {}
         }

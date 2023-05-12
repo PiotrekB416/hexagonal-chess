@@ -240,7 +240,7 @@ public interface IValidate {
     }
 
     default int checkDraw(Board board) {
-        //returns value of either 0 - no stalemate, 1 - insufficient material, 2 - threefold repetition
+        //returns value of either 0 - no draw, 1 - insufficient material, 2 - threefold repetition
 
         //check material
         {
@@ -256,20 +256,19 @@ public interface IValidate {
                 }
                 draw = false;
             }
-            if (!draw) {
+            if (draw) {
                 return 1;
             }
         }
         //check threefold repetition
         {
-            boolean draw = true;
             HashMap<String, Integer> moves = new HashMap<>();
             for (String board_pos : board.getMoveHistory()) {
                 if (moves.get(board_pos) == null) {
                     moves.put(board_pos, 0);
                 } else {
                     int num = moves.get(board_pos) + 1;
-                    if (num == 3) {
+                    if (num == 2) {
                         return 2;
                     }
                     moves.replace(board_pos, num);

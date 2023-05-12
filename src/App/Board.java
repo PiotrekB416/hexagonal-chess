@@ -287,6 +287,11 @@ public class Board extends JPanel implements IMoves {
             window.dispose();
             new App(1, 1 - whiteTurn, findChecks(board, this).size() > 0);
         }
+        if (checkDraw(this) != 0) {
+            window.dispose();
+            new App(2, checkDraw(this));
+        }
+
     }
 
     private void movePiece(int origin, int destination){
@@ -324,8 +329,12 @@ public class Board extends JPanel implements IMoves {
         } else {
             this.enPassant = -1;
         }
-
-        this.moveHistory.add(getBoardString());
+        if (this.whiteTurn == 1) {
+            this.moveHistory.add(getBoardString());
+        } else {
+            int index = this.moveHistory.size() - 1;
+            this.moveHistory.set(index, this.moveHistory.get(index) + getBoardString());
+        }
 
         this.whiteTurn = 1 - this.whiteTurn;
     }
