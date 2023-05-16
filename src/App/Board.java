@@ -249,7 +249,6 @@ public class Board extends JPanel implements IMoves {
 
     @Override
     protected void paintComponent(Graphics g) {
-
         if ((this.window.getSize().getWidth() / this.window.getSize().getHeight()) < (1150.0 / 1200.0)){
             this.scale = this.window.getSize().getWidth() / 1150.0;
         } else {
@@ -265,15 +264,17 @@ public class Board extends JPanel implements IMoves {
             if (tile == null) {
                 continue;
             }
+            tile.setCheck(false);
             int offset = this.offset.get(tile.getFile()) * 50;
             int hoffset = ((int) (57.74 + 28.88)) * revdict.get(tile.getFile());
 
-
-            g.drawImage(tile.getTexture(), (int) (hoffset * this.scale), (int) ((startheight + (100 * (12 - tile.getRank())) + offset) * this.scale), (int) (115 * this.scale), (int) (100 * this.scale), this);
             int check = getCheckedKing(board, getSelf());
             if (tile.getPiece().isWhite() == check & tile.getPiece().getClass() == King.class) {
-                g.drawImage(tile.getCheckTexture(), (int) (hoffset * this.scale), (int) ((startheight + (100 * (12 - tile.getRank())) + offset) * this.scale), (int) (115 * this.scale), (int) (100 * this.scale), this);
+                tile.setCheck(true);
             }
+
+            g.drawImage(tile.getTexture(), (int) (hoffset * this.scale), (int) ((startheight + (100 * (12 - tile.getRank())) + offset) * this.scale), (int) (115 * this.scale), (int) (100 * this.scale), this);
+
             if (tile.getPiece() != null) {
                 g.drawImage(tile.getPiece().getTexture(), (int) ((hoffset + 17.5) * this.scale), (int) ((startheight + (100 * (12 - tile.getRank())) + offset + 10) * this.scale), (int) (80 * this.scale), (int) (80 * this.scale), this);
             }

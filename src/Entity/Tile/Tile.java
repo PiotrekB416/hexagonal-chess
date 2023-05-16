@@ -15,7 +15,10 @@ public class Tile extends Entity implements IHashMaps {
     public void setPiece(Piece piece) {
         this.piece = piece;
     }
-
+    private boolean check;
+    public void setCheck(boolean check) {
+        this.check = check;
+    }
     private Piece piece;
     public Tile(int rank, String file){
         super(rank, file);
@@ -27,6 +30,9 @@ public class Tile extends Entity implements IHashMaps {
         this.moveIndicator = new boolean[]{false, false};
     }
     public Image getTexture() {
+        if(check) {
+            return new ImageIcon("src/Images/checked.png").getImage();
+        }
         if(moveIndicator[1]){
             return new ImageIcon("src/Images/selected.png").getImage();
         }
@@ -68,12 +74,6 @@ public class Tile extends Entity implements IHashMaps {
     }
 
     private boolean[] moveIndicator;
-
-
-
-    public Image getCheckTexture() {
-        return new ImageIcon("src/Images/checked.png").getImage();
-    }
 
     public Image getMoveIndicatorTexture(){
         if (this.moveIndicator[0]){

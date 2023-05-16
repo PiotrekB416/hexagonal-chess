@@ -61,8 +61,8 @@ public interface IValidate {
     }
 
     default int getCheckedKing(ArrayList<Tile> board, Board parent) {
-         int whiteTurn = parent.whiteTurn;
-         parent.whiteTurn = 1;
+        int whiteTurn = parent.whiteTurn;
+        parent.whiteTurn = 1;
         if (findChecks(board, parent).size() > 0) {
             parent.whiteTurn = whiteTurn;
             return 1;
