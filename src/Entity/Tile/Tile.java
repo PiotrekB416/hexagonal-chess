@@ -69,6 +69,12 @@ public class Tile extends Entity implements IHashMaps {
 
     private boolean[] moveIndicator;
 
+
+
+    public Image getCheckTexture() {
+        return new ImageIcon("src/Images/checked.png").getImage();
+    }
+
     public Image getMoveIndicatorTexture(){
         if (this.moveIndicator[0]){
             return new ImageIcon("src/Images/dot.png").getImage();

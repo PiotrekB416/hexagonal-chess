@@ -60,6 +60,23 @@ public interface IValidate {
         return (checks.size() == 0);
     }
 
+    default int getCheckedKing(ArrayList<Tile> board, Board parent) {
+         int whiteTurn = parent.whiteTurn;
+         parent.whiteTurn = 1;
+        if (findChecks(board, parent).size() > 0) {
+            parent.whiteTurn = whiteTurn;
+            return 1;
+        }
+        parent.whiteTurn = 0;
+        if (findChecks(board, parent).size() > 0) {
+            parent.whiteTurn = whiteTurn;
+            return 0;
+        }
+        parent.whiteTurn = whiteTurn;
+        return -1;
+
+    }
+
     default ArrayList<Integer> findChecks(ArrayList<Tile> board, Board parent){
 
         ArrayList<Integer> checkingIndexes = new ArrayList<>();

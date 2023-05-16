@@ -7,6 +7,7 @@ import Interfaces.IMoves;
 import Interfaces.IValidate;
 
 import javax.swing.*;
+import javax.xml.crypto.dsig.keyinfo.KeyInfo;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -155,7 +156,6 @@ public class Board extends JPanel implements IMoves {
                     )){continue;}
 
                     if (clickedIndex == i){
-                        moves = new ArrayList<>();
                         for (int j = 0; j < 121; j++) {
                             Tile tile2 = board.get(j);
                             if(tile2 == null){
@@ -269,7 +269,12 @@ public class Board extends JPanel implements IMoves {
             int hoffset = ((int) (57.74 + 28.88)) * revdict.get(tile.getFile());
 
 
-            g.drawImage(tile.getTexture(), (int) (hoffset * this.scale), (int) ((startheight + (100 * (12 - tile.getRank())) + offset) * this.scale), (int) (115 * this.scale), (int) (100 * this.scale), this);if (tile.getPiece() != null) {
+            g.drawImage(tile.getTexture(), (int) (hoffset * this.scale), (int) ((startheight + (100 * (12 - tile.getRank())) + offset) * this.scale), (int) (115 * this.scale), (int) (100 * this.scale), this);
+            int check = getCheckedKing(board, getSelf());
+            if (tile.getPiece().isWhite() == check & tile.getPiece().getClass() == King.class) {
+                g.drawImage(tile.getCheckTexture(), (int) (hoffset * this.scale), (int) ((startheight + (100 * (12 - tile.getRank())) + offset) * this.scale), (int) (115 * this.scale), (int) (100 * this.scale), this);
+            }
+            if (tile.getPiece() != null) {
                 g.drawImage(tile.getPiece().getTexture(), (int) ((hoffset + 17.5) * this.scale), (int) ((startheight + (100 * (12 - tile.getRank())) + offset + 10) * this.scale), (int) (80 * this.scale), (int) (80 * this.scale), this);
             }
             g.drawImage(tile.getMoveIndicatorTexture(), (int) ((hoffset + 42.5) * this.scale), (int) ((startheight + (100 * (12 - tile.getRank())) + offset + 35) * this.scale), (int) (30 * this.scale), (int) (30 * this.scale), this);
@@ -291,8 +296,8 @@ public class Board extends JPanel implements IMoves {
             window.dispose();
             new App(2, checkDraw(this));
         }
-
     }
+
 
     private void movePiece(int origin, int destination){
 
