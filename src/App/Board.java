@@ -2,12 +2,9 @@ package App;
 
 import Entity.Piece.*;
 import Entity.Tile.Tile;
-import Interfaces.IHashMaps;
 import Interfaces.IMoves;
-import Interfaces.IValidate;
 
 import javax.swing.*;
-import javax.xml.crypto.dsig.keyinfo.KeyInfo;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -30,7 +27,7 @@ public class Board extends JPanel implements IMoves {
         return this;
     }
     private int clickedIndex = -1;
-    private ArrayList<String> moveHistory = new ArrayList<>();
+    private final ArrayList<String> moveHistory = new ArrayList<>();
     public ArrayList<String> getMoveHistory() {
         return moveHistory;
     }
@@ -77,9 +74,7 @@ public class Board extends JPanel implements IMoves {
                         j--;
                         continue;
                     }
-                    case '2', '3', '4', '5', '6', '7', '8', '9' -> {
-                        wait = Integer.parseInt(String.valueOf(this.position.charAt(index))) -1;
-                    }
+                    case '2', '3', '4', '5', '6', '7', '8', '9' -> wait = Integer.parseInt(String.valueOf(this.position.charAt(index))) -1;
                     case '1' -> {
                         if (this.position.length() == (index +1)){
                             break;

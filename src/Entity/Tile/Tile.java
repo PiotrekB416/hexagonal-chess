@@ -50,17 +50,12 @@ public class Tile extends Entity implements IHashMaps {
             }
             color %= 3;
         }
-
-        Image dark = new ImageIcon("src/Images/dark.png").getImage();
-        Image medium = new ImageIcon("src/Images/brown.png").getImage();
-        Image white = new ImageIcon("src/Images/light.png").getImage();
-        switch (color) {
-            case 0: return medium;
-            case 1: return white;
-            case 2 : return dark;
-            default:
-                throw new IllegalStateException("Unexpected value: " + color);
-        }
+        return switch (color) {
+            case 0 -> new ImageIcon("src/Images/brown.png").getImage();
+            case 1 -> new ImageIcon("src/Images/light.png").getImage();
+            case 2 -> new ImageIcon("src/Images/dark.png").getImage();
+            default -> throw new IllegalStateException("Unexpected value: " + color);
+        };
     }
 
     public boolean isMoveIndicator() {

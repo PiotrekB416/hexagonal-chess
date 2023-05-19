@@ -2,7 +2,6 @@
 package App;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class App extends JFrame {
 
@@ -55,9 +54,7 @@ public class App extends JFrame {
                 } else {
                     message += "Stalemate";
                 }
-
                 add(new EndScreen(this, message));
-
             }
             case 2 -> {
                 String message = "Draw: ";
