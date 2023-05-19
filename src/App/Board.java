@@ -295,7 +295,7 @@ public class Board extends JPanel implements IMoves {
         }
         if (checkDraw(this) != 0) {
             window.dispose();
-            new App(2, checkDraw(this));
+            new App(this);
         }
     }
 

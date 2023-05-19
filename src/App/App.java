@@ -7,7 +7,7 @@ import java.awt.*;
 public class App extends JFrame {
 
     private int type;
-    private boolean ischeck;
+    private boolean isCheck;
 
     public App(){
         super();
@@ -19,15 +19,15 @@ public class App extends JFrame {
         newApp(this, x);
     }
 
-    public App(int x, int type) {
-        this.type = type;
+    public App(Board board) {
+        this.type = board.checkDraw(board);
 
-        newApp(this, x);
+        newApp(this, 2);
     }
 
-    public App(int x, int color, boolean ischeck) {
+    public App(int x, int color, boolean isCheck) {
         this.type = color;
-        this.ischeck = ischeck;
+        this.isCheck = isCheck;
 
         newApp(this, x);
     }
@@ -50,7 +50,7 @@ public class App extends JFrame {
                 } else {
                     message = "Black" + message;
                 }
-                if (this.ischeck){
+                if (this.isCheck){
                     message += "Checkmate";
                 } else {
                     message += "Stalemate";
