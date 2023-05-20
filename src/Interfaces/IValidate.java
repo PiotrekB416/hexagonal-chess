@@ -96,7 +96,7 @@ public interface IValidate {
         int rank = board.get(kingPosition).getRank();
         String file = board.get(kingPosition).getFile();
         // look for knight checks
-        Piece piece = new Piece(-1, "");
+        Piece piece = new Empty(-1, "");
         {
             int[][] moveArray = {{1, 0}, {1, 2}, {3, 2}, {3, 4}, {5, 4}, {5, 6}, {7, 6}, {7, 8}, {9, 8}, {9, 10}, {11, 10}, {11, 0}};
             ArrayList<Integer> possibleKnightChecks = piece.generateMovesFromArray(parent, moveArray, rank, file, false, false);

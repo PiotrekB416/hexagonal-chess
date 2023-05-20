@@ -62,7 +62,7 @@ public class Tile extends Entity implements IHashMaps {
         return moveIndicator[0];
     }
     public void setMoveIndicator(boolean moveIndicator) {
-        this.moveIndicator[0] = moveIndicator;
+        this.setMoveIndicator(moveIndicator, 0);
     }
     public void setMoveIndicator(boolean moveIndicator, int index) {
         this.moveIndicator[index] = moveIndicator;

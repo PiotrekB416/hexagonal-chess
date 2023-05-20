@@ -9,7 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class Piece extends Entity implements IValidate, IMoves {
+public abstract class Piece extends Entity implements IValidate, IMoves {
     public Piece(int rank, String file){
         super(rank, file);
     }
