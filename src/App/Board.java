@@ -156,8 +156,8 @@ public class Board extends JPanel implements IMoves {
                             if(tile2 == null){
                                 continue;
                             }
-                            tile2.setMoveIndicator(false);
-                            tile2.setMoveIndicator(false, 1);
+                            tile2.getIndicator().setIndicator(false);
+                            tile2.getIndicator().setIndicator(false, 1);
                         }
                         clickedIndex = -1;
                         repaint();
@@ -177,7 +177,7 @@ public class Board extends JPanel implements IMoves {
                 }
                 if (board.get(clickedIndex).getPiece().isWhite() != getSelf().whiteTurn){
                     if(clickedTile > 0) {
-                        if (board.get(clickedIndex).isMoveIndicator()) {
+                        if (board.get(clickedIndex).getIndicator().getIndicator(0)) {
                             movePiece(clickedTile, clickedIndex);
                             //Board.whiteTurn = !Board.whiteTurn;
 
@@ -187,8 +187,8 @@ public class Board extends JPanel implements IMoves {
                             if (tile2 == null) {
                                 continue;
                             }
-                            tile2.setMoveIndicator(false);
-                            tile2.setMoveIndicator(false, 1);
+                            tile2.getIndicator().setIndicator(false);
+                            tile2.getIndicator().setIndicator(false, 1);
                         }
                         clickedIndex = -1;
                         //Board.whiteTurn = !Board.whiteTurn;
@@ -202,8 +202,8 @@ public class Board extends JPanel implements IMoves {
                         if (tile == null) {
                             continue;
                         }
-                        tile.setMoveIndicator(false);
-                        tile.setMoveIndicator(false, 1);
+                        tile.getIndicator().setIndicator(false);
+                        tile.getIndicator().setIndicator(false, 1);
                     }
                     repaint();
                     return;
@@ -214,8 +214,8 @@ public class Board extends JPanel implements IMoves {
                     if(tile == null){
                         continue;
                     }
-                    tile.setMoveIndicator(false);
-                    tile.setMoveIndicator(false, 1);
+                    tile.getIndicator().setIndicator(false);
+                    tile.getIndicator().setIndicator(false, 1);
                 }
                 //System.out.println(board.get(Board.clickedIndex));
 
@@ -227,11 +227,11 @@ public class Board extends JPanel implements IMoves {
                         System.out.println("stalemate");
                     }
                 }
-                board.get(clickedIndex).setMoveIndicator(true, 1);
+                board.get(clickedIndex).getIndicator().setIndicator(true, 1);
                 for(int index: moves){
                     Tile tile = board.get(index);
 
-                    if(tile != null){ tile.setMoveIndicator(true);}
+                    if(tile != null){ tile.getIndicator().setIndicator(true);}
                 }
                 repaint();
                 //System.out.println(Board.whiteTurn);
@@ -260,21 +260,21 @@ public class Board extends JPanel implements IMoves {
                 continue;
             }
             tile.setCheck(false);
-            int offset = this.offset.get(tile.getFile()) * 50;
-            int hoffset = ((int) (57.74 + 28.88)) * revdict.get(tile.getFile());
+//            int offset = this.offset.get(tile.getFile()) * 50;
+//            int hoffset = ((int) (57.74 + 28.88)) * revdict.get(tile.getFile());
 
             int check = getCheckedKing(board, getSelf());
             if (tile.getPiece().isWhite() == check & tile.getPiece().getClass() == King.class) {
                 tile.setCheck(true);
             }
 
-            g.drawImage(tile.getTexture(), (int) (hoffset * this.scale), (int) ((startheight + (100 * (12 - tile.getRank())) + offset) * this.scale), (int) (115 * this.scale), (int) (100 * this.scale), this);
+            tile.draw(g, this.scale, this);
 
             if (tile.getPiece() != null) {
-                g.drawImage(tile.getPiece().getTexture(), (int) ((hoffset + 17.5) * this.scale), (int) ((startheight + (100 * (12 - tile.getRank())) + offset + 10) * this.scale), (int) (80 * this.scale), (int) (80 * this.scale), this);
+                tile.getPiece().draw(g, this.scale, this);
             }
-            g.drawImage(tile.getMoveIndicatorTexture(), (int) ((hoffset + 42.5) * this.scale), (int) ((startheight + (100 * (12 - tile.getRank())) + offset + 35) * this.scale), (int) (30 * this.scale), (int) (30 * this.scale), this);
 
+            tile.getIndicator().draw(g, this.scale, this);
 
             //g.drawImage(hex, 100, 100,   this);
         }
@@ -393,7 +393,8 @@ public class Board extends JPanel implements IMoves {
                 {(int) (((57.74 + 28.88) * 5 - 5) * this.scale) + 43, (int) ((450) * this.scale) + 47*2 + 80}, {(int) (((57.74 + 28.88) * 5 - 5) * this.scale) + 43*2 + 80, (int) ((450) * this.scale) + 47*2 + 80}
         };
         for(int i = 0; i < images.length; i++){
-            g.drawImage(images[i], offsets[i][0], offsets[i][1], (int) (80 * this.scale), (int) (80 * this.scale), b);
+            pieces[i].draw(g, this.scale, b, offsets[i]);
+
         }
     }
 }
