@@ -26,25 +26,28 @@ public class Indicator extends Entity implements IDrawable {
         this.type[index] = indicator;
     }
 
-    public Image getTexture() {
-
-        if (this.type[0]) {
-            return new ImageIcon("src/Images/dot.png").getImage();
-        }
-        return new ImageIcon("src/Images/Empty.png").getImage();
-    }
-    public Image getTileTexture() {
+    public Color getTileTexture() {
          if (this.type[1]) {
-            return new ImageIcon("src/Images/selected.png").getImage();
+            return Color.decode("#00ff00");
          } else if (this.type[2]) {
-            return new ImageIcon("src/Images/checked.png").getImage();
+            return Color.decode("#ff0000");
          }
          return null;
     }
     @Override
     public void draw(Graphics g, double scale, ImageObserver observer) {
-        int offset = this.offset.get(this.getFile()) * 50;
-        int hoffset = ((int) (57.74 + 28.88)) * revdict.get(this.getFile());
-        g.drawImage(this.getTexture(), (int) ((hoffset + 42.5) * scale), (int) ((startheight + (100 * (12 - this.getRank())) + offset + 35) * scale), (int) (30 * scale), (int) (30 * scale), observer);
+        double offset = 0;
+
+        g.setColor(Color.decode("#00ff00"));
+
+        double centerY = startheight + offset + (100 * (12 - this.getRank())) + this.offset.get(this.getFile()) * 50 + 35;
+        double centerX = ((57.74 + 28.83)) * (double)(revdict.get(this.getFile())) + offset + 39;
+        if (this.type[0]) {
+
+            g.fillOval((int)centerX, (int)centerY, 30, 30);
+        }
+
+
+        //g.drawImage(this.getTexture(), (int) ((hoffset + 42.5) * scale), (int) ((startheight + (100 * (12 - this.getRank())) + offset + 35) * scale), (int) (30 * scale), (int) (30 * scale), observer);
     }
 }

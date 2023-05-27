@@ -24,7 +24,7 @@ public class Tile extends Entity implements IHashMaps, IDrawable {
         this.getIndicator().setIndicator(check, 2);
     }
     private Piece piece;
-    private Indicator indicator;
+    private final Indicator indicator;
     public Tile(int rank, String file){
         super(rank, file);
         this.piece = null;
@@ -35,10 +35,10 @@ public class Tile extends Entity implements IHashMaps, IDrawable {
         this.piece = piece;
         this.indicator = new Indicator(rank, file);
     }
-    public Image getTexture() {
-        if (this.getIndicator().getIndicator(1) || this.getIndicator().getIndicator(2)) {
-            return this.getIndicator().getTileTexture();
-        }
+
+    private final Color[] colors = new Color[]{Color.decode("#a05a2c"), Color.decode("#ff9955"), Color.decode("#803300")};
+    @Override
+    public void draw(Graphics g, double scale, ImageObserver observer) {
         int color = this.rank % 3;
         if (this.revdict.get(this.file) % 3 == 1) {
             color += 2;
@@ -53,17 +53,26 @@ public class Tile extends Entity implements IHashMaps, IDrawable {
             }
             color %= 3;
         }
-        return switch (color) {
-            case 0 -> new ImageIcon("src/Images/brown.png").getImage();
-            case 1 -> new ImageIcon("src/Images/light.png").getImage();
-            case 2 -> new ImageIcon("src/Images/dark.png").getImage();
-            default -> throw new IllegalStateException("Unexpected value: " + color);
-        };
-    }
-    @Override
-    public void draw(Graphics g, double scale, ImageObserver observer) {
-        int offset = this.offset.get(this.getFile()) * 50;
-        int hoffset = ((int) (57.74 + 28.88)) * revdict.get(this.getFile());
-        g.drawImage(this.getTexture(), (int) (hoffset * scale), (int) ((startheight + (100 * (12 - this.getRank())) + offset) * scale), (int) (115 * scale), (int) (100 * scale), observer);
+//        int offset = this.offset.get(this.getFile()) * 50;
+//        double hoffset = ((57.74 + 28.88)) * (double)revdict.get(this.getFile());
+        double offset = 54;
+        double centerY = startheight + offset + (100 * (12 - this.getRank())) + this.offset.get(this.getFile()) * 50;
+        double centerX = ((57.74 + 28.83)) * (double)(revdict.get(this.getFile())) + offset + ((6-revdict.get(this.getFile())) * 0.5);
+
+        Polygon p = new Polygon();
+
+        for (int i = 0; i < 6; i++) {
+            double radius = 54;
+            p.addPoint((int) (centerX * scale + radius * Math.cos(i * 2 * Math.PI / 6)),
+                    (int) (centerY * scale + radius * Math.sin(i * 2 * Math.PI / 6)));
+        }
+        g.setColor(colors[color]);
+        if (this.getIndicator().getIndicator(1) || this.getIndicator().getIndicator(2)) {
+            g.setColor(this.getIndicator().getTileTexture());
+        }
+
+        g.fillPolygon(p);
+
+        //g.drawImage(this.getTexture(), (int) (hoffset * scale), (int) ((startheight + (100 * (12 - this.getRank())) + offset) * scale), (int) (115 * scale), (int) (100 * scale), observer);
     }
 }

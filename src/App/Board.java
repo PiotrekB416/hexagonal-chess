@@ -127,11 +127,12 @@ public class Board extends JPanel implements IMoves {
                                 case 2 -> board.get(promotion).setPiece(new Bishop(piececlone.getRank(), piececlone.getFile(), piececlone.isWhite()));
                                 case 3 -> board.get(promotion).setPiece(new Knight(piececlone.getRank(), piececlone.getFile(), piececlone.isWhite()));
                             }
+                            promotion = -1;
                             break;
                         }
                     }
 
-                    promotion = -1;
+
                     repaint();
                     return;
                 }
@@ -273,7 +274,6 @@ public class Board extends JPanel implements IMoves {
             if (tile.getPiece() != null) {
                 tile.getPiece().draw(g, this.scale, this);
             }
-
             tile.getIndicator().draw(g, this.scale, this);
 
             //g.drawImage(hex, 100, 100,   this);
