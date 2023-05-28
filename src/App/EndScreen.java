@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class EndScreen extends JPanel {
-    public EndScreen(JFrame sup, String message){
+    public EndScreen(App sup, String message){
         setBackground(Color.BLACK);
         JLabel title = new JLabel(message, SwingConstants.CENTER);
         title.setFont(new Font("Sans", Font.BOLD, 80));
@@ -23,8 +23,7 @@ public class EndScreen extends JPanel {
         starto.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                sup.dispose();
-                new App(0);
+                sup.changeLayout();
             }
         });
 
@@ -42,5 +41,6 @@ public class EndScreen extends JPanel {
         });
 
         add(quit);
+        repaint();
     }
 }

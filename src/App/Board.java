@@ -19,7 +19,7 @@ public class Board extends JPanel implements IMoves {
     public int whiteTurn;
     public int enPassant;
     private double scale;
-    private final JFrame window;
+    private final App window;
     public void setScale(double scale){
         this.scale = scale;
     }
@@ -99,9 +99,16 @@ public class Board extends JPanel implements IMoves {
 
     private String position;
 
-    public Board(String position, int whiteTurn, int enPassant, JFrame window){
+    public Board(String position, int whiteTurn, int enPassant, App window){
+//        super();
+        this.setSize(new Dimension(1150, 1200));
         this.position = position;
-        this.scale = 1;
+
+        if ((this.getHeight() / this.getWidth()) > 1150/1200) {
+            this.scale = (this.getHeight() / 1150.0);
+        } else {
+            this.scale = (this.getWidth() / 1200.0);
+        }
         this.promotion = -1;
         this.window = window;
         this.setPosition(position, whiteTurn, enPassant);
@@ -221,7 +228,7 @@ public class Board extends JPanel implements IMoves {
                 //System.out.println(board.get(Board.clickedIndex));
 
                 moves = board.get(clickedIndex).getPiece().getPossibleMoves(getSelf());
-                if (Board.moves.size() == 0 && board.get(clickedIndex).getPiece().getClass() == King.class){
+                if (Board.moves.size() == 0){
                     if(findChecks(board, getSelf()).size() != 0) {
                         System.out.println("mate");
                     } else {
@@ -252,7 +259,6 @@ public class Board extends JPanel implements IMoves {
         }
 
         setBackground(Color.BLACK);
-        int startheight = -300;
         super.paintComponent(g);
 
 
@@ -285,13 +291,13 @@ public class Board extends JPanel implements IMoves {
         if (moves.size() == 0) {
 //            JLabel wintext = new JLabel("Ktoś wygrał!");
 //            wintext.setFont(new Font("Sans", Font.PLAIN, 40));
-            window.dispose();
-            new App(1, 1 - whiteTurn, findChecks(board, this).size() > 0);
+            //window.dispose();
+            window.changeLayout(1, 1 - whiteTurn, findChecks(board, this).size() > 0);
+            //new App(1, 1 - whiteTurn, findChecks(board, this).size() > 0);
         }
-        if (checkDraw(this) != 0) {
-            window.dispose();
-            new App(this);
-        }
+
+        window.changeLayout(this);
+
     }
 
 

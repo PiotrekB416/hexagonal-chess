@@ -63,8 +63,8 @@ public class Tile extends Entity implements IHashMaps, IDrawable {
 
         for (int i = 0; i < 6; i++) {
             double radius = 54;
-            p.addPoint((int) (centerX * scale + radius * Math.cos(i * 2 * Math.PI / 6)),
-                    (int) (centerY * scale + radius * Math.sin(i * 2 * Math.PI / 6)));
+            p.addPoint((int) (centerX * scale + radius * Math.cos(i * 2 * Math.PI / 6) * scale),
+                    (int) (centerY * scale + radius * Math.sin(i * 2 * Math.PI / 6) * scale));
         }
         g.setColor(colors[color]);
         if (this.getIndicator().getIndicator(1) || this.getIndicator().getIndicator(2)) {

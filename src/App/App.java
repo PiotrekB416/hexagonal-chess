@@ -2,54 +2,37 @@
 package App;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class App extends JFrame {
 
     private int type;
     private boolean isCheck;
+    private JPanel panel;
 
-    public App(){
-        super();
-        newApp(this, -1);
+    public void changeLayout() {
+        changeLayout(0);
     }
 
-    public App(int x){
-        super();
-        newApp(this, x);
-    }
-
-    public App(Board board) {
-        this.type = board.checkDraw(board);
-
-        newApp(this, 2);
-    }
-
-    public App(int x, int color, boolean isCheck) {
+    public void changeLayout(int x, int color, boolean isCheck) {
         this.type = color;
         this.isCheck = isCheck;
-
-        newApp(this, x);
+        changeLayout(x);
     }
 
-    private void newApp(JFrame sup, int x){
-        sup.setTitle("Szachy heksagonalne");
-        sup.setIconImage(new ImageIcon("src/Images/brown.png").getImage());
-
-        sup.setSize(1150, 1200);
-        sup.setLocationRelativeTo(null);
-        sup.setVisible(true);
-        //super.add(new Board("b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1", 1, -1, this));
-        //"k/3/5/7/9/11/5p5/4P6/11/11/10K"
-
-
-//        pane.add(new StartScreen(this));
-//        pane.add(new Board( "b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1",1, -1, this));
-//
-
-
+    public void changeLayout(Board board) {
+        this.type = board.checkDraw(board);
+        if (this.type != 0) {
+            changeLayout(2);
+        }
+    }
+    private String position;
+    private void changeLayout(int x) {
         switch (x) {
-            case -1 -> {sup.repaint(); add(new StartScreen(this));}
-            case 0 -> {sup.repaint(); add(new Board( "b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1",1, -1, this)); sup.repaint(); }
+            case 0 -> {
+                this.setContentPane(new Board( this.position,1, -1, this));
+                revalidate();
+            }
             case 1 -> {
                 String message = " wins: ";
                 if (this.type == 1) {
@@ -58,11 +41,14 @@ public class App extends JFrame {
                     message = "Black" + message;
                 }
                 if (this.isCheck){
-                    message += "Checkmate";
+                    message += "CHECKMATE";
                 } else {
-                    message += "Stalemate";
+                    message += "STALEMATE";
                 }
-                add(new EndScreen(this, message));
+                this.setContentPane(new EndScreen(this, message));
+                revalidate();
+                repaint();
+
             }
             case 2 -> {
                 String message = "Draw: ";
@@ -71,13 +57,29 @@ public class App extends JFrame {
                 } else if (this.type == 2){
                     message += "Threefold Repetition";
                 }
-                add(new EndScreen(this, message));
+                this.setContentPane(new EndScreen(this, message));
+                revalidate();
+                repaint();
             }
             default -> {}
         }
+    }
 
-        //super.add(new Board("", 1, -1, this))
-        sup.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    public App(){
+        super();
+        setTitle("Szachy heksagonalne");
+        setIconImage(new ImageIcon("src/Images/brown.png").getImage());
+
+        //this.position = "b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1";
+        this.position = "k/3/5/7/9/11/5p5/4P6/11/11/10K";
+
+        setPreferredSize(new Dimension(1150, 1200));
+        this.setLocationRelativeTo(null);
+        super.setContentPane(new StartScreen(this));
+        revalidate();
+        super.pack();
+        super.setVisible(true);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
 }
