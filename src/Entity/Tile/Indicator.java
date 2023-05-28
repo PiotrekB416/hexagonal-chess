@@ -36,12 +36,16 @@ public class Indicator extends Entity implements IDrawable {
     }
     @Override
     public void draw(Graphics g, double scale, ImageObserver observer) {
-        double offset = 0;
-
         g.setColor(Color.decode("#00ff00"));
 
-        double centerY = startheight + offset + (100 * (12 - this.getRank())) + this.offset.get(this.getFile()) * 50 + 35;
-        double centerX = ((57.74 + 28.83)) * (double)(revdict.get(this.getFile())) + offset + 39;
+        //double centerY = startheight + offset + (100 * (12 - this.getRank())) + this.offset.get(this.getFile()) * 50 + 35;
+        //double centerX = ((57.74 + 28.83)) * (double)(revdict.get(this.getFile())) + offset + 39;
+        double radius = 54;
+        double offset = 54;
+        double centerX = ((57.74 + 28.83)) * (double)(revdict.get(this.getFile())) + offset + ((6-revdict.get(this.getFile())) * 0.5);
+        centerX = (centerX * scale + radius * Math.cos(2 * Math.PI / 6)) - 41.5;
+        double centerY = startheight + offset + (100 * (12 - this.getRank())) + this.offset.get(this.getFile()) * 50;
+        centerY = (centerY * scale + radius * Math.sin(2 * Math.PI / 6)) - 63;
         if (this.type[0]) {
 
             g.fillOval((int)centerX, (int)centerY, 30, 30);
