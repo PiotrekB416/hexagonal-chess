@@ -26,7 +26,7 @@ public class App extends JFrame {
             changeLayout(2);
         }
     }
-    private String position;
+    private final String position;
     private void changeLayout(int x) {
         switch (x) {
             case 0 -> {
@@ -74,8 +74,8 @@ public class App extends JFrame {
         this.position = "k/3/5/7/9/11/5p5/4P6/11/11/10K";
 
         setPreferredSize(new Dimension(1150, 1200));
-        this.setLocationRelativeTo(null);
-        super.setContentPane(new StartScreen(this));
+        setLocationRelativeTo(null);
+        setContentPane(new StartScreen(this));
         revalidate();
         super.pack();
         super.setVisible(true);

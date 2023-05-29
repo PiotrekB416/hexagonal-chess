@@ -43,12 +43,16 @@ public class Indicator extends Entity implements IDrawable {
         double radius = 54;
         double offset = 54;
         double centerX = ((57.74 + 28.83)) * (double)(revdict.get(this.getFile())) + offset + ((6-revdict.get(this.getFile())) * 0.5);
-        centerX = (centerX * scale + radius * Math.cos(2 * Math.PI / 6)) - 41.5;
+        // calculate the difference of x coordinate of bottom left and bottom right points of the tile hexagon and offset it by radius of the indicator to make the circle drawn in the center
+        double xOffset = ((centerX * scale + radius * Math.cos(2 * Math.PI / 6)) - (centerX * scale + radius * Math.cos(2*2 * Math.PI / 6))) / 2 + (30 * scale) / 2;
+        centerX = (centerX * scale + radius * Math.cos(2 * Math.PI / 6)) - xOffset;
         double centerY = startheight + offset + (100 * (12 - this.getRank())) + this.offset.get(this.getFile()) * 50;
-        centerY = (centerY * scale + radius * Math.sin(2 * Math.PI / 6)) - 63;
+        // calculate the difference of y coordinate of top and bottom points of the tile hexagon and offset it by radius of the indicator to make the circle drawn in the center
+        double yOffset = ((centerY * scale + radius * Math.sin(2 * Math.PI / 6)) - (centerY * scale + radius * Math.sin(4*2 * Math.PI / 6))) / 2 + (30 * scale) / 2;
+        centerY = (centerY * scale + radius * Math.sin(2 * Math.PI / 6)) - yOffset;
         if (this.type[0]) {
 
-            g.fillOval((int)centerX, (int)centerY, 30, 30);
+            g.fillOval((int)centerX, (int)centerY, (int)(30 * scale), (int)(30 * scale));
         }
 
 

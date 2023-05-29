@@ -35,6 +35,11 @@ public class Tile extends Entity implements IHashMaps, IDrawable {
         this.piece = piece;
         this.indicator = new Indicator(rank, file);
     }
+    private Polygon polygon;
+
+    public Polygon getPolygon() {
+        return polygon;
+    }
 
     private final Color[] colors = new Color[]{Color.decode("#a05a2c"), Color.decode("#ff9955"), Color.decode("#803300")};
     @Override
@@ -59,11 +64,11 @@ public class Tile extends Entity implements IHashMaps, IDrawable {
         double centerY = startheight + offset + (100 * (12 - this.getRank())) + this.offset.get(this.getFile()) * 50;
         double centerX = ((57.74 + 28.83)) * (double)(revdict.get(this.getFile())) + offset + ((6-revdict.get(this.getFile())) * 0.5);
 
-        Polygon p = new Polygon();
+        this.polygon = new Polygon();
 
         for (int i = 0; i < 6; i++) {
             double radius = 54;
-            p.addPoint((int) (centerX * scale + radius * Math.cos(i * 2 * Math.PI / 6) * scale),
+            this.polygon.addPoint((int) (centerX * scale + radius * Math.cos(i * 2 * Math.PI / 6) * scale),
                     (int) (centerY * scale + radius * Math.sin(i * 2 * Math.PI / 6) * scale));
         }
         g.setColor(colors[color]);
@@ -71,7 +76,7 @@ public class Tile extends Entity implements IHashMaps, IDrawable {
             g.setColor(this.getIndicator().getTileTexture());
         }
 
-        g.fillPolygon(p);
+        g.fillPolygon(this.polygon);
 
         //g.drawImage(this.getTexture(), (int) (hoffset * scale), (int) ((startheight + (100 * (12 - this.getRank())) + offset) * scale), (int) (115 * scale), (int) (100 * scale), observer);
     }

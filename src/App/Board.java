@@ -116,7 +116,6 @@ public class Board extends JPanel implements IMoves {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                int startheight = -300;
                 int clickedTile = -1;
                 if (promotion != -1){
                     int[][] offsets = new int[][] {
@@ -148,15 +147,20 @@ public class Board extends JPanel implements IMoves {
                     if(tile == null){
                         continue;
                     }
-                    int offset = Board.offset.get(tile.getFile()) * 50;
-                    int hoffset = ((int) (57.74 + 28.88)) * revdict.get(tile.getFile());
-                    int startx = (int) ((hoffset + 17.5) * scale);
-                    int starty = (int) ((startheight + (100 * (12 - tile.getRank())) + offset + 10) * scale);
-                    int length = (int) (80 * scale);
+//                    int offset = Board.offset.get(tile.getFile()) * 50;
+//                    int hoffset = ((int) (57.74 + 28.88)) * revdict.get(tile.getFile());
+//                    int startx = (int) ((hoffset + 17.5) * scale);
+//                    int starty = (int) ((startheight + (100 * (12 - tile.getRank())) + offset + 10) * scale);
+//                    int length = (int) (80 * scale);
+//
+//                    if (!(e.getX() > startx && e.getX() < startx + length &&
+//                        e.getY() > starty && e.getY() < starty + length
+//                    )){continue;}
 
-                    if (!(e.getX() > startx && e.getX() < startx + length &&
-                        e.getY() > starty && e.getY() < starty + length
-                    )){continue;}
+                    Point p = new Point(e.getX(), e.getY());
+                    if (!(tile.getPolygon().contains(p))) {
+                        continue;
+                    }
 
                     if (clickedIndex == i){
                         for (int j = 0; j < 121; j++) {
@@ -384,9 +388,9 @@ public class Board extends JPanel implements IMoves {
     private void promotePiece(Graphics g, Board b){
         //int offset = this.offset.get("e") * 50;
         g.setColor(Color.RED);
-        g.drawRect((int) (((57.74 + 28.88) * 5 - 5) * this.scale) - 1, (int) ((450) * this.scale) - 1, 290, 302);
+        g.drawRect((int) (((57.74 + 28.88) * 5 - 5) * this.scale) - 1, (int) ((450) * this.scale) - 1, (int)(289 * this.scale), (int)(301 * this.scale));
         g.setColor(Color.GRAY);
-        g.fillRect((int) (((57.74 + 28.88) * 5 - 5) * this.scale), (int) ((450) * this.scale), 288, 300);
+        g.fillRect((int) (((57.74 + 28.88) * 5 - 5) * this.scale), (int) ((450) * this.scale), (int)(288 * this.scale), (int)(300 * this.scale));
         g.setColor(Color.GRAY);
         int color = this.promotion > 70 ? 0 : 1;
 
@@ -395,8 +399,8 @@ public class Board extends JPanel implements IMoves {
 
         Image[] images = new Image[]{pieces[0].getTexture(), pieces[1].getTexture(), pieces[2].getTexture(), pieces[3].getTexture()};
         int[][] offsets = new int[][] {
-                {(int) (((57.74 + 28.88) * 5 - 5) * this.scale) + 43, (int) ((450) * this.scale) + 47}, {(int) (((57.74 + 28.88) * 5 - 5) * this.scale) + 43*2 + 80, (int) ((450) * this.scale) + 47},
-                {(int) (((57.74 + 28.88) * 5 - 5) * this.scale) + 43, (int) ((450) * this.scale) + 47*2 + 80}, {(int) (((57.74 + 28.88) * 5 - 5) * this.scale) + 43*2 + 80, (int) ((450) * this.scale) + 47*2 + 80}
+                {(int) ((((57.74 + 28.88) * 5 - 5) + 43) * this.scale), (int) ((450 + 47) * this.scale)}, {(int) ((((57.74 + 28.88) * 5 - 5) + 43*2 + 80) * this.scale), (int) ((450 + 47) * this.scale)},
+                {(int) ((((57.74 + 28.88) * 5 - 5) + 43) * this.scale), (int) ((450 + 47*2 + 80) * this.scale)}, {(int) ((((57.74 + 28.88) * 5 - 5) + 43*2 + 80) * this.scale), (int) ((450 + 47*2 + 80) * this.scale)}
         };
         for(int i = 0; i < images.length; i++){
             pieces[i].draw(g, this.scale, b, offsets[i]);
