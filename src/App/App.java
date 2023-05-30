@@ -74,6 +74,7 @@ public class App extends JFrame {
         this.position = "k/3/5/7/9/11/5p5/4P6/11/11/10K";
 
         setPreferredSize(new Dimension(1150, 1200));
+        setSize(new Dimension(1150, 1200));
         setLocationRelativeTo(null);
         setContentPane(new StartScreen(this));
         revalidate();
