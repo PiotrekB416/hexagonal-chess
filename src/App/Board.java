@@ -19,6 +19,9 @@ public class Board extends JPanel implements IMoves {
     public int whiteTurn;
     public int enPassant;
     private double scale;
+
+    private Promotion[] promotionPieces;
+
     private final App window;
     public void setScale(double scale){
         this.scale = scale;
@@ -31,15 +34,10 @@ public class Board extends JPanel implements IMoves {
     public ArrayList<String> getMoveHistory() {
         return moveHistory;
     }
-
     private static ArrayList<Integer> moves = new ArrayList<>();
-
-    public void setPosition(String position, int whiteTurn, int enPassant) {
-        this.whiteTurn = whiteTurn;
-        this.enPassant = enPassant;
-        this.position = position;
+    private String position;
+    private void parseFen() {
         int size = 11;
-        board = new ArrayList<>();
         int index = 0;
         int wait = 0;
         for (int i = size; i > 0; i--){
@@ -50,8 +48,9 @@ public class Board extends JPanel implements IMoves {
                 len = (size - i) * 2 + 1;
             }
             for (int j = 1; j < start; j++){
-                    board.add(null);
+                board.add(null);
             }
+
             for (int j = start; j < len + start; j++){
                 Tile tile = new Tile(i, dict.get(j), new Empty(i, dict.get(j)));
 
@@ -95,9 +94,17 @@ public class Board extends JPanel implements IMoves {
                 board.add(null);
             }
         }
+
     }
 
-    private String position;
+    public void setPosition(String position, int whiteTurn, int enPassant) {
+        this.whiteTurn = whiteTurn;
+        this.enPassant = enPassant;
+        this.position = position;
+
+        board = new ArrayList<>();
+        this.parseFen();
+    }
 
     public Board(String position, int whiteTurn, int enPassant, App window){
 //        super();
@@ -117,15 +124,10 @@ public class Board extends JPanel implements IMoves {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int clickedTile = -1;
+                Point p = new Point(e.getX(), e.getY());
                 if (promotion != -1){
-                    int[][] offsets = new int[][] {
-                            {(int) (((57.74 + 28.88) * 5 - 5) * scale) + 43, (int) ((450) * scale) + 47}, {(int) (((57.74 + 28.88) * 5 - 5) * scale) + 43*2 + 80, (int) ((450) * scale) + 47},
-                            {(int) (((57.74 + 28.88) * 5 - 5) * scale) + 43, (int) ((450) * scale) + 47*2 + 80}, {(int) (((57.74 + 28.88) * 5 - 5) * scale) + 43*2 + 80, (int) ((450) * scale) + 47*2 + 80}
-                    };
-                    int length = (int) (80 * scale);
-                    for(int i = 0; i < 4; i++){
-                        int[] offset = offsets[i];
-                        if (e.getX() > offset[0] && e.getX() < (offset[0] + length) && e.getY() > offset[1] && e.getY() < offset[1] + length){
+                    for(int i = 0; i < promotionPieces.length; i++){
+                        if (promotionPieces[i].getPolygon().contains(p)){
                             Piece piececlone = board.get(promotion).getPiece();
                             switch (i) {
                                 case 0 -> board.get(promotion).setPiece(new Queen(piececlone.getRank(), piececlone.getFile(), piececlone.isWhite()));
@@ -137,8 +139,6 @@ public class Board extends JPanel implements IMoves {
                             break;
                         }
                     }
-
-
                     repaint();
                     return;
                 }
@@ -147,17 +147,6 @@ public class Board extends JPanel implements IMoves {
                     if(tile == null){
                         continue;
                     }
-//                    int offset = Board.offset.get(tile.getFile()) * 50;
-//                    int hoffset = ((int) (57.74 + 28.88)) * revdict.get(tile.getFile());
-//                    int startx = (int) ((hoffset + 17.5) * scale);
-//                    int starty = (int) ((startheight + (100 * (12 - tile.getRank())) + offset + 10) * scale);
-//                    int length = (int) (80 * scale);
-//
-//                    if (!(e.getX() > startx && e.getX() < startx + length &&
-//                        e.getY() > starty && e.getY() < starty + length
-//                    )){continue;}
-
-                    Point p = new Point(e.getX(), e.getY());
                     if (!(tile.getPolygon().contains(p))) {
                         continue;
                     }
@@ -191,8 +180,6 @@ public class Board extends JPanel implements IMoves {
                     if(clickedTile > 0) {
                         if (board.get(clickedIndex).getIndicator().getIndicator(0)) {
                             movePiece(clickedTile, clickedIndex);
-                            //Board.whiteTurn = !Board.whiteTurn;
-
                         }
                         for (int j = 0; j < 121; j++) {
                             Tile tile2 = board.get(j);
@@ -203,7 +190,6 @@ public class Board extends JPanel implements IMoves {
                             tile2.getIndicator().setIndicator(false, 1);
                         }
                         clickedIndex = -1;
-                        //Board.whiteTurn = !Board.whiteTurn;
                         repaint();
                         return;
                     }
@@ -229,24 +215,14 @@ public class Board extends JPanel implements IMoves {
                     tile.getIndicator().setIndicator(false);
                     tile.getIndicator().setIndicator(false, 1);
                 }
-                //System.out.println(board.get(Board.clickedIndex));
 
                 moves = board.get(clickedIndex).getPiece().getPossibleMoves(getSelf());
-                if (Board.moves.size() == 0){
-                    if(findChecks(board, getSelf()).size() != 0) {
-                        System.out.println("mate");
-                    } else {
-                        System.out.println("stalemate");
-                    }
-                }
                 board.get(clickedIndex).getIndicator().setIndicator(true, 1);
                 for(int index: moves){
                     Tile tile = board.get(index);
-
                     if(tile != null){ tile.getIndicator().setIndicator(true);}
                 }
                 repaint();
-                //System.out.println(Board.whiteTurn);
 
             }
 
@@ -271,8 +247,6 @@ public class Board extends JPanel implements IMoves {
                 continue;
             }
             tile.setCheck(false);
-//            int offset = this.offset.get(tile.getFile()) * 50;
-//            int hoffset = ((int) (57.74 + 28.88)) * revdict.get(tile.getFile());
 
             int check = getCheckedKing(board, getSelf());
             if (tile.getPiece().isWhite() == check & tile.getPiece().getClass() == King.class) {
@@ -285,28 +259,21 @@ public class Board extends JPanel implements IMoves {
                 tile.getPiece().draw(g, this.scale, this);
             }
             tile.getIndicator().draw(g, this.scale, this);
-
-            //g.drawImage(hex, 100, 100,   this);
         }
         if(this.promotion != -1){
             promotePiece(g, this);
         }
         ArrayList<Integer> moves = getMovesByPlayer(this, whiteTurn);
         if (moves.size() == 0) {
-//            JLabel wintext = new JLabel("Ktoś wygrał!");
-//            wintext.setFont(new Font("Sans", Font.PLAIN, 40));
-            //window.dispose();
             window.changeLayout(1, 1 - whiteTurn, findChecks(board, this).size() > 0);
-            //new App(1, 1 - whiteTurn, findChecks(board, this).size() > 0);
         }
-
         window.changeLayout(this);
 
     }
 
 
     private void movePiece(int origin, int destination){
-
+        System.out.println(this.board.get(73).getRank() + " " + this.board.get(73).getPiece().getRank());
         Piece dest = this.board.get(destination).getPiece();
         int destRank = dest.getRank();
         String destFile = dest.getFile();
@@ -315,7 +282,7 @@ public class Board extends JPanel implements IMoves {
         String origFile = orig.getFile();
 
         if(destination == this.enPassant && orig.getClass() == Pawn.class){
-            this.board.get(destination + ((orig.isWhite() == 1) ? 11 : -11)).setPiece(new Empty(destRank + ((orig.isWhite() == 1) ? 1 : -1), destFile));
+            this.board.get(destination + ((orig.isWhite() == 1) ? 11 : -11)).setPiece(new Empty(destRank + ((orig.isWhite() == 1) ? -1 : 1), destFile));
         }
         if(orig.getClass() == Pawn.class && ((dest.getRank() == 1 && orig.isWhite() == 0) || ((
                 dest.getRank() == 6 && (dest.getFile().equals("a") || dest.getFile().equals("l")) ||
@@ -326,13 +293,12 @@ public class Board extends JPanel implements IMoves {
                 dest.getRank() == 11 && dest.getFile().equals("f")) && orig.isWhite() == 1))){
             this.promotion = destination;
         }
-
-        this.board.get(origin).setPiece(new Empty(origRank, origFile));
         orig.setFile(destFile);
         orig.setRank(destRank);
         this.board.get(destination).setPiece(orig);
+        this.board.get(origin).setPiece(new Empty(origRank, origFile));
+
         if(orig.getClass() == Pawn.class && Math.abs(origin - destination) == 22){
-            //System.out.println(Math.abs(origin - destination));
             this.enPassant = origin + 11;
             if (orig.isWhite() == 1){
                 this.enPassant = origin - 11;
@@ -386,7 +352,6 @@ public class Board extends JPanel implements IMoves {
     }
 
     private void promotePiece(Graphics g, Board b){
-        //int offset = this.offset.get("e") * 50;
         g.setColor(Color.RED);
         g.drawRect((int) (((57.74 + 28.88) * 5 - 5) * this.scale) - 1, (int) ((450) * this.scale) - 1, (int)(289 * this.scale), (int)(301 * this.scale));
         g.setColor(Color.GRAY);
@@ -395,16 +360,11 @@ public class Board extends JPanel implements IMoves {
         int color = this.promotion > 70 ? 0 : 1;
 
 
-        Piece[] pieces = new Piece[]{new Queen(-1, "0", color), new Rook(-1, "0", color), new Bishop(-1, "0", color), new Knight(-1, "0", color)};
+        this.promotionPieces =  new Promotion[]{new Promotion(0, color), new Promotion(1, color), new Promotion(2, color), new Promotion(3, color)};
 
-        Image[] images = new Image[]{pieces[0].getTexture(), pieces[1].getTexture(), pieces[2].getTexture(), pieces[3].getTexture()};
-        int[][] offsets = new int[][] {
-                {(int) ((((57.74 + 28.88) * 5 - 5) + 43) * this.scale), (int) ((450 + 47) * this.scale)}, {(int) ((((57.74 + 28.88) * 5 - 5) + 43*2 + 80) * this.scale), (int) ((450 + 47) * this.scale)},
-                {(int) ((((57.74 + 28.88) * 5 - 5) + 43) * this.scale), (int) ((450 + 47*2 + 80) * this.scale)}, {(int) ((((57.74 + 28.88) * 5 - 5) + 43*2 + 80) * this.scale), (int) ((450 + 47*2 + 80) * this.scale)}
-        };
-        for(int i = 0; i < images.length; i++){
-            pieces[i].draw(g, this.scale, b, offsets[i]);
 
+        for (Promotion piece : this.promotionPieces) {
+            piece.draw(g, this.scale, b);
         }
     }
 }

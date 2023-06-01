@@ -31,8 +31,4 @@ public abstract class Piece extends Entity implements IValidate, IMoves, IDrawab
 
         g.drawImage(this.getTexture(), (int) ((hoffset + 17.5) * scale), (int) ((startheight + (100 * (12 - this.rank)) + offset + 10) * scale), (int) (80 * scale), (int) (80 * scale), observer);
     }
-
-    public void draw(Graphics g, double scale, ImageObserver observer, int[] offsets) {
-        g.drawImage(this.getTexture(), offsets[0], offsets[1], (int) (80 * scale), (int) (80 * scale), observer);
-    }
 }

@@ -70,8 +70,8 @@ public class App extends JFrame {
         setTitle("Szachy heksagonalne");
         setIconImage(new ImageIcon("src/Images/brown.png").getImage());
 
-        //this.position = "b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1";
-        this.position = "k/3/5/7/9/11/5p5/4P6/11/11/10K";
+        this.position = "b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1";
+        //this.position = "k/3/5/7/9/11/5p5/4P6/11/11/10K";
 
         setPreferredSize(new Dimension(1150, 1200));
         setSize(new Dimension(1150, 1200));
