@@ -72,7 +72,7 @@ public class Tile extends Entity implements IHashMaps, IDrawable {
                     (int) (centerY * scale + radius * Math.sin(i * 2 * Math.PI / 6) * scale));
         }
         g.setColor(colors[color]);
-        if (this.getIndicator().getIndicator(1) || this.getIndicator().getIndicator(2)) {
+        if (this.getIndicator().getIndicator(1) || this.getIndicator().getIndicator(2) || this.getIndicator().getIndicator(3)) {
             g.setColor(this.getIndicator().getTileTexture());
         }
 

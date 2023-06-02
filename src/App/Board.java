@@ -6,6 +6,7 @@ import Interfaces.IMoves;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.*;
@@ -19,9 +20,7 @@ public class Board extends JPanel implements IMoves {
     public int whiteTurn;
     public int enPassant;
     private double scale;
-
     private Promotion[] promotionPieces;
-
     private final App window;
     public void setScale(double scale){
         this.scale = scale;
@@ -120,7 +119,6 @@ public class Board extends JPanel implements IMoves {
         this.window = window;
         this.setPosition(position, whiteTurn, enPassant);
         addMouseListener(new MouseAdapter() {
-
             @Override
             public void mouseClicked(MouseEvent e) {
                 int clickedTile = -1;
@@ -223,9 +221,7 @@ public class Board extends JPanel implements IMoves {
                     if(tile != null){ tile.getIndicator().setIndicator(true);}
                 }
                 repaint();
-
             }
-
         });
         repaint();
     }
@@ -273,11 +269,18 @@ public class Board extends JPanel implements IMoves {
 
 
     private void movePiece(int origin, int destination){
-        System.out.println(this.board.get(73).getRank() + " " + this.board.get(73).getPiece().getRank());
+
+        for (Tile tile: this.board) {
+            if(tile == null) {continue;}
+            tile.getIndicator().setIndicator(false, 3);
+        }
+
         Piece dest = this.board.get(destination).getPiece();
+        this.board.get(destination).getIndicator().setIndicator(true, 3);
         int destRank = dest.getRank();
         String destFile = dest.getFile();
         Piece orig = this.board.get(origin).getPiece();
+        this.board.get(origin).getIndicator().setIndicator(true, 3);
         int origRank = orig.getRank();
         String origFile = orig.getFile();
 
