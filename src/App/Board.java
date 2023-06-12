@@ -35,6 +35,7 @@ public class Board extends JPanel implements IMoves {
     }
     private static ArrayList<Integer> moves = new ArrayList<>();
     private String position;
+    private MouseAdapter exitAdapter;
     private void parseFen() {
         int size = 11;
         int index = 0;
@@ -118,6 +119,7 @@ public class Board extends JPanel implements IMoves {
         this.promotion = -1;
         this.window = window;
         this.setPosition(position, whiteTurn, enPassant);
+
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -229,14 +231,41 @@ public class Board extends JPanel implements IMoves {
     @Override
     protected void paintComponent(Graphics g) {
         if ((this.window.getSize().getWidth() / this.window.getSize().getHeight()) < (1150.0 / 1200.0)){
-            this.scale = this.window.getSize().getWidth() / 1150.0;
+            this.scale = this.window.getSize().getWidth() / 1300.0;
         } else {
-            this.scale = this.window.getSize().getHeight() / 1200.0;
+            this.scale = this.window.getSize().getHeight() / 1300.0;
         }
 
         setBackground(Color.BLACK);
         super.paintComponent(g);
+        Image bg = new ImageIcon("src/Images/background.jpg").getImage();
+        Image exit = new ImageIcon("src/Images/exit.png").getImage();
+        g.drawImage(bg, 0, 0, this.getWidth(), this.getHeight(), this);
 
+        int width = 200;
+        int height = (int) ((double) (exit.getHeight(null) / (double) (exit.getWidth(null))) * width);
+        g.drawImage(exit, this.getWidth() * 2 / 3, 100, width, height, this);
+
+        int w = this.getWidth() * 2/3, h = 100;
+        Polygon exitPolygon = new Polygon();
+        exitPolygon.addPoint(w + 0,         h + height / 4);
+        exitPolygon.addPoint(w + width / 2, h + 0);
+        exitPolygon.addPoint(w + width,     h + height / 4);
+        exitPolygon.addPoint(w + width,     h + height * 3 / 4);
+        exitPolygon.addPoint(w + width / 2, h + height);
+        exitPolygon.addPoint(w + 0,         h + height * 3 / 4);
+        this.removeMouseListener(exitAdapter);
+        exitAdapter = new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+
+                if (exitPolygon.contains(e.getX(), e.getY())) {
+                    window.showMenu();
+                }
+            }
+        };
+        this.addMouseListener(exitAdapter);
 
         for (Tile tile : board) {
             if (tile == null) {

@@ -44,6 +44,7 @@ public class Tile extends Entity implements IHashMaps, IDrawable {
     private final Color[] colors = new Color[]{Color.decode("#a05a2c"), Color.decode("#ff9955"), Color.decode("#803300")};
     @Override
     public void draw(Graphics g, double scale, ImageObserver observer) {
+        Graphics2D g2 = (Graphics2D) g;
         int color = this.rank % 3;
         if (this.revdict.get(this.file) % 3 == 1) {
             color += 2;
@@ -65,7 +66,6 @@ public class Tile extends Entity implements IHashMaps, IDrawable {
         double centerX = ((57.74 + 28.83)) * (double)(revdict.get(this.getFile())) + offset + ((6-revdict.get(this.getFile())) * 0.5);
 
         this.polygon = new Polygon();
-
         for (int i = 0; i < 6; i++) {
             double radius = 54;
             this.polygon.addPoint((int) (centerX * scale + radius * Math.cos(i * 2 * Math.PI / 6) * scale),
@@ -75,9 +75,11 @@ public class Tile extends Entity implements IHashMaps, IDrawable {
         if (this.getIndicator().getIndicator(1) || this.getIndicator().getIndicator(2) || this.getIndicator().getIndicator(3)) {
             g.setColor(this.getIndicator().getTileTexture());
         }
-
+        g2.setStroke(new BasicStroke(2));
         g.fillPolygon(this.polygon);
-
+        g.setColor(Color.BLACK);
+        g.setPaintMode();
+        g.drawPolygon(this.polygon);
         //g.drawImage(this.getTexture(), (int) (hoffset * scale), (int) ((startheight + (100 * (12 - this.getRank())) + offset) * scale), (int) (115 * scale), (int) (100 * scale), observer);
     }
 }

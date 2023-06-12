@@ -41,9 +41,9 @@ public class App extends JFrame {
                     message = "Black" + message;
                 }
                 if (this.isCheck){
-                    message += "CHECKMATE";
+                    message += "checkmate";
                 } else {
-                    message += "STALEMATE";
+                    message += "stalemate";
                 }
                 this.setContentPane(new Screen(this, ScreenType.End, message));
                 revalidate();
@@ -64,7 +64,11 @@ public class App extends JFrame {
             default -> {}
         }
     }
-
+    public void showMenu(){
+        this.setContentPane(new Screen(this, ScreenType.Start));
+        revalidate();
+        repaint();
+    }
     public App(){
         super();
         setTitle("Szachy heksagonalne");
