@@ -45,7 +45,7 @@ public class App extends JFrame {
                 } else {
                     message += "STALEMATE";
                 }
-                this.setContentPane(new EndScreen(this, message));
+                this.setContentPane(new Screen(this, ScreenType.End, message));
                 revalidate();
                 repaint();
 
@@ -57,7 +57,7 @@ public class App extends JFrame {
                 } else if (this.type == 2){
                     message += "Threefold Repetition";
                 }
-                this.setContentPane(new EndScreen(this, message));
+                this.setContentPane(new Screen(this, ScreenType.End, message));
                 revalidate();
                 repaint();
             }
@@ -76,7 +76,7 @@ public class App extends JFrame {
         setPreferredSize(new Dimension(1150, 1200));
         setSize(new Dimension(1150, 1200));
         setLocationRelativeTo(null);
-        setContentPane(new StartScreen(this));
+        setContentPane(new Screen(this, ScreenType.Start));
         revalidate();
         super.pack();
         super.setVisible(true);
