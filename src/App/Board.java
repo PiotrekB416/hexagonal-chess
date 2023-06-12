@@ -6,7 +6,6 @@ import Interfaces.IMoves;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.*;
@@ -243,7 +242,7 @@ public class Board extends JPanel implements IMoves {
         g.drawImage(bg, 0, 0, this.getWidth(), this.getHeight(), this);
 
         int width = 200;
-        int height = (int) ((double) (exit.getHeight(null) / (double) (exit.getWidth(null))) * width);
+        int height = (int) ((exit.getHeight(null) / (double) (exit.getWidth(null))) * width);
         g.drawImage(exit, this.getWidth() * 2 / 3, 100, width, height, this);
 
         int w = this.getWidth() * 2/3, h = 100;

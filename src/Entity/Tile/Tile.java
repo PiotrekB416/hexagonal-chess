@@ -5,7 +5,7 @@ import Interfaces.IHashMaps;
 import Entity.Entity;
 import Entity.Piece.Piece;
 
-import javax.swing.*;
+
 import java.awt.*;
 import java.awt.image.ImageObserver;
 
