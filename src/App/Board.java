@@ -21,9 +21,6 @@ public class Board extends JPanel implements IMoves {
     private double scale;
     private Promotion[] promotionPieces;
     private final App window;
-    public void setScale(double scale){
-        this.scale = scale;
-    }
     private Board getSelf(){
         return this;
     }
@@ -107,13 +104,17 @@ public class Board extends JPanel implements IMoves {
 
     public Board(String position, int whiteTurn, int enPassant, App window){
 //        super();
-        this.setSize(new Dimension(1150, 1200));
+
+        int width = 1400;
+        int height = 1200;
+
+        this.setSize(new Dimension(width, height));
         this.position = position;
 
-        if ((this.getHeight() / this.getWidth()) > 1150/1200) {
-            this.scale = (this.getHeight() / 1150.0);
+        if ((this.getHeight() / this.getWidth()) > width/height) {
+            this.scale = (this.getHeight() / (double)width);
         } else {
-            this.scale = (this.getWidth() / 1200.0);
+            this.scale = (this.getWidth() / (double)height);
         }
         this.promotion = -1;
         this.window = window;

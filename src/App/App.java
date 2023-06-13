@@ -8,8 +8,6 @@ public class App extends JFrame {
 
     private int type;
     private boolean isCheck;
-    private JPanel panel;
-
     public void changeLayout() {
         changeLayout(0);
     }
@@ -77,8 +75,8 @@ public class App extends JFrame {
         this.position = "b/qbk/n1b1n/r5r/ppppppppp/11/5P5/4P1P4/3P1B1P3/2P2B2P2/1PRNQBKNRP1";
         //this.position = "k/3/5/7/9/11/5p5/4P6/11/11/10K";
 
-        setPreferredSize(new Dimension(1150, 1200));
-        setSize(new Dimension(1150, 1200));
+        setPreferredSize(new Dimension(1400, 1200));
+        setSize(new Dimension(1400, 1200));
         setLocationRelativeTo(null);
         setContentPane(new Screen(this, ScreenType.Start));
         revalidate();
