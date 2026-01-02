@@ -1,6 +1,7 @@
 package Entity.Piece;
 
 import App.Board;
+import Images.Images;
 import Interfaces.IMoves;
 
 import javax.swing.*;
@@ -36,9 +37,9 @@ public class King extends Piece {
         if (this.white == 1){
             color = "white";
         }
-        String file = "src/Images/" + color + "/king.png";
+        String file = color + "/king.png";
 
-        Image image = new ImageIcon(file).getImage();
+        Image image = new ImageIcon(Images.class.getResource(file)).getImage();
 
         return image;
     }

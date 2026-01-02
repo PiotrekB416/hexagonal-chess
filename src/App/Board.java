@@ -2,6 +2,7 @@ package App;
 
 import Entity.Piece.*;
 import Entity.Tile.Tile;
+import Images.Images;
 import Interfaces.IMoves;
 
 import javax.swing.*;
@@ -230,16 +231,17 @@ public class Board extends JPanel implements IMoves {
 
     @Override
     protected void paintComponent(Graphics g) {
-        if ((this.window.getSize().getWidth() / this.window.getSize().getHeight()) < (1150.0 / 1200.0)){
-            this.scale = this.window.getSize().getWidth() / 1300.0;
+
+        if ((this.window.getSize().getWidth() / this.window.getSize().getHeight()) < (1400.0 / 1200.0)){
+            this.scale = this.window.getSize().getWidth() / 1400.0;
         } else {
-            this.scale = this.window.getSize().getHeight() / 1300.0;
+            this.scale = this.window.getSize().getHeight() / 1200.0;
         }
 
         setBackground(Color.BLACK);
         super.paintComponent(g);
-        Image bg = new ImageIcon("src/Images/background.jpg").getImage();
-        Image exit = new ImageIcon("src/Images/exit.png").getImage();
+        Image bg = new ImageIcon(Images.class.getResource("background.jpg")).getImage();
+        Image exit = new ImageIcon(Images.class.getResource("exit.png")).getImage();
         g.drawImage(bg, 0, 0, this.getWidth(), this.getHeight(), this);
 
         int width = 200;

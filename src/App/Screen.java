@@ -1,5 +1,7 @@
 package App;
 
+import Images.Images;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -38,49 +40,15 @@ public class Screen extends JPanel {
         add(title);
         setLayout(new GridLayout(5, 1));
 
-
-
-
-//        JButton starto;
-//
-//        if(this.type == ScreenType.Start) {
-//            starto = new JButton("Start");
-//        } else {
-//            starto = new JButton("Play Again");
-//        }
-//        starto.setFont(new Font("Sans", Font.BOLD, 50));
-//        starto.setBackground(Color.BLACK); starto.setForeground(Color.RED); starto.setBorder(null);starto.setFocusPainted(false);
-//
-//        starto.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                sup.changeLayout();
-//            }
-//        });
-//
-//        add(starto);
-//
-//        JButton quit = new JButton("Quit");
-//        quit.setFont(new Font("Sans", Font.PLAIN, 40));
-//        quit.setBackground(Color.BLACK); quit.setForeground(Color.GRAY);quit.setBorder(null);quit.setFocusPainted(false);
-//
-//        quit.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                System.exit(2);
-//            }
-//        });
-//
-//        add(quit);
         repaint();
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Image bg = new ImageIcon("src/Images/background.jpg").getImage();
-        Image start = new ImageIcon("src/Images/start.png").getImage();
-        Image quit = new ImageIcon("src/Images/quit.png").getImage();
+        Image bg = new ImageIcon(Images.class.getResource("background.jpg")).getImage();
+        Image start = new ImageIcon(Images.class.getResource("start.png")).getImage();
+        Image quit = new ImageIcon(Images.class.getResource("quit.png")).getImage();
         g.drawImage(bg, 0, 0, this.getWidth(), this.getHeight(), this);
         int width = this.getWidth() / 5;
         int height = (int) ((double) (start.getHeight(null) / (double) (start.getWidth(null))) * width);
@@ -119,5 +87,6 @@ public class Screen extends JPanel {
                 }
             }
         });
+        revalidate();
     }
 }
