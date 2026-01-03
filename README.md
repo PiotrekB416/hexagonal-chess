@@ -1,4 +1,18 @@
-# gra-java
+# Hexagonal Chess
+
+## Images
+<table>
+  <tr>
+    <td>
+      <img src="./images/start_screen.png" alt="start screen"/>
+    </td>
+    <td>
+      <img src="./images/game_screen.png" alt="game screen"/>
+    </td>
+  </tr>
+</table>
+
+## License
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
